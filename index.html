@@ -6,7 +6,7 @@
   <title>SKKU IMBA 46기 | 2026년 여름집중학기 수업 시간표</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=20260620e" />
+  <link rel="stylesheet" href="css/style.css?v=20260621c" />
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
@@ -56,11 +56,11 @@
 <!-- ========== MAIN TABS ========== -->
 <div class="tab-nav">
   <div class="tab-nav-inner">
-    <button class="tab-btn active" data-tab="search">
-      <i class="fas fa-search"></i> 원우 시간표 검색
-    </button>
-    <button class="tab-btn" data-tab="timetable">
+    <button class="tab-btn active" data-tab="timetable">
       <i class="fas fa-table"></i> 전체 시간표
+    </button>
+    <button class="tab-btn" data-tab="search">
+      <i class="fas fa-search"></i> 원우 시간표 검색
     </button>
     <button class="tab-btn" data-tab="calendar">
       <i class="fas fa-calendar-alt"></i> 캘린더 뷰
@@ -140,7 +140,7 @@
   </section>
 
   <!-- ===== TAB 1: 원우 검색 ===== -->
-  <section class="tab-panel active" id="tab-search">
+  <section class="tab-panel" id="tab-search">
 
     <!-- 안내 문구 -->
     <div class="search-guide-banner">
@@ -258,7 +258,7 @@
   </section>
 
   <!-- ===== TAB 2: 전체 시간표 ===== -->
-  <section class="tab-panel" id="tab-timetable">
+  <section class="tab-panel active" id="tab-timetable">
     <div class="panel-header">
       <h2><i class="fas fa-table"></i> 전체 수업 시간표</h2>
       <p>날짜별 오프라인, 화상Q&A 수업 스케쥴을 확인하세요</p>
@@ -381,8 +381,8 @@
 </footer>
 
 <!-- ========== SCRIPTS ========== -->
-<script src="js/data.js?v=20260620e"></script>
-<script src="js/app.js?v=20260620e"></script>
+<script src="js/data.js?v=20260621c"></script>
+<script src="js/app.js?v=20260621c"></script>
 <script type="module" src="js/firebase.js"></script>
 <script type="module">
   import {
