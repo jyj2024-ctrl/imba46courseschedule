@@ -312,7 +312,7 @@ window.deleteGroup = function(idx) {
 };
 
 // ── 그룹 저장 모달 (신규) ─────────────────────────────────
-const GROUP_COLORS = ['#1f7a5c','#e74c3c','#27ae60','#f39c12','#8e44ad','#16a085','#d35400','#2c3e50','#c0392b','#1abc9c'];
+const GROUP_COLORS = ['#2563b0','#e74c3c','#27ae60','#f39c12','#8e44ad','#16a085','#d35400','#2c3e50','#c0392b','#1abc9c'];
 
 window.openGroupSaveModal = function() {
   const selected = state.selectedStudents;
@@ -435,7 +435,7 @@ function renderStudentList() {
     const msg = (STUDENTS.length === 0)
       ? '<i class="fas fa-user-clock" style="font-size:22px;display:block;margin-bottom:8px;opacity:.5"></i>여름집중학기 원우 수강 명단은<br>준비 중입니다'
       : '검색 결과 없음';
-    list.innerHTML = `<div style="padding:24px;text-align:center;color:#86a195;font-size:13px;line-height:1.6;">${msg}</div>`;
+    list.innerHTML = `<div style="padding:24px;text-align:center;color:#8a9ab0;font-size:13px;line-height:1.6;">${msg}</div>`;
     return;
   }
 
@@ -591,7 +591,7 @@ function renderScheduleResult() {
       const st = STUDENTS.find(s => s.name === names[0]);
       if (st && st.courses && st.courses.length) {
         return `<div class="sr-course-chips">${st.courses.map(c => {
-          const color = (COURSES[c] && COURSES[c].color) ? COURSES[c].color : '#1f7a5c';
+          const color = (COURSES[c] && COURSES[c].color) ? COURSES[c].color : '#2563b0';
           return `<span class="sr-course-chip" style="border-left:3px solid ${color}">${c}</span>`;
         }).join('')}</div>`;
       }
@@ -648,7 +648,7 @@ function renderListView(items, studentNames) {
       <div class="schedule-date-header">
         <span class="date-badge ${todayClass} ${hasExam ? 'exam-date' : ''}">${formatDateShort(date)}</span>
         <span class="date-week-no">${wn > 0 ? wn + '주차' : ''}</span>
-        <span style="font-size:12px;color:#86a195;">${dayItems.length}개 수업</span>
+        <span style="font-size:12px;color:#8a9ab0;">${dayItems.length}개 수업</span>
       </div>
       ${dayItems.map(item => renderScheduleItem(item, studentNames)).join('')}
     </div>`;
@@ -669,14 +669,14 @@ function renderQnaWeeklyView(items, studentNames) {
   function getCatBg(courseName) {
     const cat = COURSE_CATEGORY ? (COURSE_CATEGORY[courseName] || '기타') : '기타';
     const map = {
-      '전략/경영': '#e4f2ea',
+      '전략/경영': '#e8f4ff',
       '마케팅':    '#fff3e0',
       '재무/회계': '#e8f5e9',
       '인사/조직': '#fce4ec',
       '기술/IT':   '#f3e5f5',
-      '기타':      '#f4f9f6'
+      '기타':      '#f5f7fa'
     };
-    return map[cat] || '#f4f9f6';
+    return map[cat] || '#f5f7fa';
   }
   function getCatBorder(courseName) {
     const cat = COURSE_CATEGORY ? (COURSE_CATEGORY[courseName] || '기타') : '기타';
@@ -686,9 +686,9 @@ function renderQnaWeeklyView(items, studentNames) {
       '재무/회계': '#4caf50',
       '인사/조직': '#e91e63',
       '기술/IT':   '#9c27b0',
-      '기타':      '#8aa79b'
+      '기타':      '#90a4ae'
     };
-    return map[cat] || '#8aa79b';
+    return map[cat] || '#90a4ae';
   }
 
   // 월별 그룹핑
@@ -809,7 +809,7 @@ function renderQnaWeeklyView(items, studentNames) {
               rowHtml += `<td class="qna-tbl-cell">${dateNum}</td>`;
             } else {
               const cards = cellItems.map(item => {
-                const course = COURSES[item.course] || { professor: '-', total: '?', color: '#1f7a5c' };
+                const course = COURSES[item.course] || { professor: '-', total: '?', color: '#2563b0' };
                 const enrolled = studentNames
                   ? STUDENTS.filter(s => studentNames.includes(s.name) && s.courses.includes(item.course))
                   : [];
@@ -838,7 +838,7 @@ function renderQnaWeeklyView(items, studentNames) {
               rowHtml += `<td class="qna-tbl-cell"></td>`;
             } else {
               const cards = cellItems.map(item => {
-                const course = COURSES[item.course] || { professor: '-', total: '?', color: '#1f7a5c' };
+                const course = COURSES[item.course] || { professor: '-', total: '?', color: '#2563b0' };
                 const enrolled = studentNames
                   ? STUDENTS.filter(s => studentNames.includes(s.name) && s.courses.includes(item.course))
                   : [];
@@ -1103,7 +1103,7 @@ function renderWeekView(items, studentNames) {
       }).join('');
       const pd = CLASS_PERIODS[period];
       return `<tr>
-        <th style="white-space:nowrap;background:#f0f8f3;color:var(--primary);">${period}<br><span style="font-size:10px;font-weight:400;color:#86a195">${pd ? pd.time : ''}</span></th>
+        <th style="white-space:nowrap;background:#f5f8ff;color:var(--primary);">${period}<br><span style="font-size:10px;font-weight:400;color:#8a9ab0">${pd ? pd.time : ''}</span></th>
         ${cells}
       </tr>`;
     }).join('');
@@ -1283,7 +1283,7 @@ function renderTimetable() {
       <div class="schedule-date-header">
         <span class="date-badge ${todayClass} ${hasExam ? 'exam-date' : ''}">${formatDateShort(date)}</span>
         <span class="date-week-no">${wn > 0 ? wn + '주차' : ''}</span>
-        <span style="font-size:12px;color:#86a195;">${dayItems.length}개 수업</span>
+        <span style="font-size:12px;color:#8a9ab0;">${dayItems.length}개 수업</span>
       </div>
       ${dayItems.map(item => renderTimetableItem(item)).join('')}
     </div>`;
@@ -1634,7 +1634,7 @@ window.showCourseDetail = function(courseName) {
   }).join('');
 
   content.innerHTML = `
-    <div style="margin-bottom:16px;padding:14px;background:#f0f8f3;border-radius:10px;">
+    <div style="margin-bottom:16px;padding:14px;background:#f5f8ff;border-radius:10px;">
       <strong>담당교수:</strong> ${course.professor} 교수 &nbsp;|&nbsp;
       <strong>총 강의:</strong> ${schedules.length}회 &nbsp;|&nbsp;
       <strong>수강인원:</strong> ${students.length}명
@@ -1642,11 +1642,11 @@ window.showCourseDetail = function(courseName) {
     <div class="cd-grid">
       <div>
         <div class="cd-section-title"><i class="fas fa-users"></i> 수강 원우 (${students.length}명)</div>
-        <div class="cd-student-list">${studentHtml || '<span style="color:#86a195">등록된 원우 없음</span>'}</div>
+        <div class="cd-student-list">${studentHtml || '<span style="color:#8a9ab0">등록된 원우 없음</span>'}</div>
       </div>
       <div>
         <div class="cd-section-title"><i class="fas fa-calendar-check"></i> 수업 일정 (${schedules.length}회)</div>
-        <div class="cd-schedule-list">${scheduleHtml || '<span style="color:#86a195">일정 없음</span>'}</div>
+        <div class="cd-schedule-list">${scheduleHtml || '<span style="color:#8a9ab0">일정 없음</span>'}</div>
       </div>
     </div>
   `;
@@ -1956,8 +1956,8 @@ function renderStatsKpi() {
   const kpis = [
     {
       icon: 'fa-users',
-      color: '#1f7a5c',
-      bg:    '#e4f3ea',
+      color: '#2563b0',
+      bg:    '#e8f0ff',
       label: '총 원우 수',
       value: `${totalStudents}명`,
       sub:   `해외 재직 ${overseasCount}명 포함`
@@ -2256,7 +2256,7 @@ function renderDqResult(dateStr, selectedSlots) {
   const examName = dateStr === '2026-04-18' ? '중간고사' : '기말고사';
 
   courseEl.innerHTML = allItems.map(item => {
-    const course    = COURSES[item.course] || { professor: '-', color: '#1f7a5c' };
+    const course    = COURSES[item.course] || { professor: '-', color: '#2563b0' };
     const enrolled  = STUDENTS.filter(s => s.courses.includes(item.course));
     enrolled.forEach(s => {
       if (!allEnrolledSet.has(s.name)) allEnrolledSet.set(s.name, []);
@@ -2284,7 +2284,7 @@ function renderDqResult(dateStr, selectedSlots) {
     const typeBadge = getTypeBadge(item.type);
     const pi = CLASS_PERIODS[item.period] || { label: item.period };
     const timeDisp = item.time || pi.time || '';
-    return `<div class="dq-course-card" style="border-left:4px solid ${course.color || '#1f7a5c'}">
+    return `<div class="dq-course-card" style="border-left:4px solid ${course.color || '#2563b0'}">
       <div class="dq-course-top">
         <div class="dq-course-info">
           <span class="dq-course-name" onclick="showCourseDetail('${item.course.replace(/'/g,"\\'")}')">${item.course}</span>
