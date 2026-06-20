@@ -964,9 +964,9 @@ function renderCalDateView(items, studentNames) {
   return html;
 }
 
-// 여름집중학기 전용 카드 렌더 (원우 수강 데이터 없음 → 인원/팝업 미표시)
-function renderSummerItem(item) {
-  // 중간/기말고사
+// 여름집중학기 전용 카드 렌더 (1학기와 동일하게 전체 인원/선택 원우 칩 표시)
+function renderSummerItem(item, studentNames) {
+  // 중간/기말고사 (과목별 수강 데이터 없음 → 인원/칩 미표시)
   if (item.kind === 'exam') {
     return `<div class="schedule-item exam">
       <div class="schedule-item-time">
@@ -980,41 +980,58 @@ function renderSummerItem(item) {
       <span class="type-badge exam"><i class="fas fa-file-alt"></i> 시험</span>
     </div>`;
   }
+
+  // 공통: 전체 수강 인원 + 선택된 원우 칩 (1학기와 동일)
+  const info        = (typeof SUMMER_COURSES !== 'undefined' && SUMMER_COURSES[item.course]) || { professor: '-' };
+  const allStudents = STUDENTS.filter(s => s.courses.includes(item.course));
+  const shownStudents = studentNames
+    ? STUDENTS.filter(s => studentNames.includes(s.name) && s.courses.includes(item.course))
+    : [];
+  const studentTags = shownStudents.length > 0
+    ? `<div class="student-tags">${shownStudents.map(s => `<span class="student-tag" onclick="event.stopPropagation();showStudentInfoPopup('${s.name}',event)" style="cursor:pointer">${s.name}</span>`).join('')}</div>`
+    : '';
+  const safeCourseName = item.course.replace(/'/g, "\\'");
+
   // 해외글로벌세미나 (사전학습 1·2차 / 사후발표 3차)
   if (item.kind === 'seminar') {
-    const sinfo = (typeof SUMMER_COURSES !== 'undefined' && SUMMER_COURSES[item.course]) || { professor: '-' };
-    const sub   = item.note ? ` · ${item.note}` : '';
+    const sub = item.note ? ` · ${item.note}` : '';
     return `<div class="schedule-item offline">
       <div class="schedule-item-time">
         <span class="period-label">세미나</span>
         <span class="time-range">${item.time || ''}</span>
       </div>
-      <div class="schedule-item-content">
-        <div class="course-name-label"><i class="fas fa-globe"></i> ${item.course}</div>
-        <div class="professor-label"><i class="fas fa-user-tie"></i> ${sinfo.professor} 교수 · 해외글로벌세미나${sub}</div>
-        ${item.sessionNo ? `<div class="session-label">${item.sessionNo}/${item.total}회차 · 여름집중학기</div>` : ''}
+      <div class="schedule-item-content" style="position:relative;">
+        <div class="course-name-label si-clickable" onclick="toggleCourseStudentPopup(event, '${safeCourseName}')">
+          <i class="fas fa-globe"></i> ${item.course} <i class="fas fa-users tt-students-icon"></i>
+        </div>
+        <div class="professor-label"><i class="fas fa-user-tie"></i> ${info.professor} 교수 · 해외글로벌세미나${sub}</div>
+        <div class="session-label">${item.sessionNo}/${item.total}회차 · 전체 ${allStudents.length}명</div>
+        ${studentTags}
       </div>
       <span class="type-badge offline"><i class="fas fa-plane-departure"></i> 세미나</span>
     </div>`;
   }
+
   // 일반 여름 수업 (오프라인 / 화상Q&A)
-  const info = (typeof SUMMER_COURSES !== 'undefined' && SUMMER_COURSES[item.course]) || { professor: '-' };
   return `<div class="schedule-item ${item.type}">
     <div class="schedule-item-time">
       <span class="period-label">${item.period || ''}</span>
       <span class="time-range">${item.time || ''}</span>
     </div>
-    <div class="schedule-item-content">
-      <div class="course-name-label">${item.course}</div>
+    <div class="schedule-item-content" style="position:relative;">
+      <div class="course-name-label si-clickable" onclick="toggleCourseStudentPopup(event, '${safeCourseName}')">
+        ${item.course} <i class="fas fa-users tt-students-icon"></i>
+      </div>
       <div class="professor-label"><i class="fas fa-user-tie"></i> ${info.professor} 교수</div>
-      <div class="session-label">${item.sessionNo}/${item.total}회차 · 여름집중학기</div>
+      <div class="session-label">${item.sessionNo}/${item.total}회차 · 전체 ${allStudents.length}명</div>
+      ${studentTags}
     </div>
     ${getTypeBadge(item.type)}
   </div>`;
 }
 
 function renderScheduleItem(item, studentNames) {
-  if (item.summer) return renderSummerItem(item);
+  if (item.summer) return renderSummerItem(item, studentNames);
   // 시험(중간/기말고사) 특수 처리
   if (item.isExam) {
     const course   = COURSES[item.course] || { professor: '-' };
