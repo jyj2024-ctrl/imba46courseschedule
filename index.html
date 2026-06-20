@@ -6,7 +6,7 @@
   <title>SKKU IMBA 46기 | 2026년 여름집중학기 수업 시간표</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css?v=20260621d" />
+  <link rel="stylesheet" href="css/style.css?v=20260621e" />
   <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 </head>
 <body>
@@ -71,6 +71,9 @@
     </button>
     <button class="tab-btn" data-tab="stats">
       <i class="fas fa-chart-bar"></i> 과목 통계
+    </button>
+    <button class="tab-btn" data-tab="curriculum">
+      <i class="fas fa-graduation-cap"></i> 커리큘럼
     </button>
     <a class="tab-btn tab-btn-link" href="https://imba.ac.kr/" target="_blank" rel="noopener noreferrer">
       <i class="fas fa-external-link-alt"></i> 홈페이지 바로가기
@@ -370,6 +373,74 @@
     </div>
   </section>
 
+  <!-- ===== TAB 7: 커리큘럼 ===== -->
+  <section class="tab-panel" id="tab-curriculum">
+    <div class="panel-header">
+      <h2><i class="fas fa-graduation-cap"></i> IMBA 커리큘럼</h2>
+    </div>
+
+    <div class="curr-notice">
+      2018-전기 신입생 이후는 필수사항이며, 아래와 같이 교과목을 이수하여야 합니다.
+    </div>
+
+    <ul class="curr-list">
+      <li>과목 당 학점 체계 : 개별 교과목 이수 학점 3학점</li>
+      <li>학기 수강 학점 : 매 학기 9학점(집중과정은 3학점)</li>
+      <li>2018년도 이후 입학생 졸업 소요학점 (본 졸업요건은 소급 적용되지 않음)
+        <div class="curr-subitem">： 전공과목에서 45학점 이상 취득하고 전공영역별 학점 이수</div>
+      </li>
+    </ul>
+
+    <h3 class="curr-roadmap-title"><i class="fas fa-globe"></i> IMBA전공별 교과목 로드맵</h3>
+    <p class="curr-roadmap-desc">전공기반 과목 5과목중 3과목 이상 이수, 전공심화 과목 3개 분야에서 각각 1과목 이상 선택 수강</p>
+
+    <div class="curr-table-wrap">
+      <table class="curr-table">
+        <thead>
+          <tr>
+            <th class="curr-col-base">전공기반</th>
+            <th class="curr-col-deep">전공심화</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="curr-subhead-row">
+            <td>5과목중 3과목 이상 이수</td>
+            <td>3개 분야에서 1과목씩 수강 후 개인별로 과목 선택 가능</td>
+          </tr>
+          <tr>
+            <td class="curr-base">
+              <div>마케팅관리론</div>
+              <div>조직행동론</div>
+            </td>
+            <td class="curr-deep">
+              <div class="curr-cat">Marketing / Management</div>
+              <div class="curr-courses">경영자를위한데이터분석및통계적사고 / 경영전략론 / 마케팅믹스론 / 마케팅조사론 / 소비자경험관리 / 소비자행동론 / 유통관리론 / 인적자원전략론 / 인터넷비즈니스론 / 조직설계론 / 차이나비즈니스 / 플랫폼비즈니스전략</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="curr-base">
+              <div>회계와기업경영</div>
+              <div>재무의이해</div>
+            </td>
+            <td class="curr-deep">
+              <div class="curr-cat">Accounting / Finance</div>
+              <div class="curr-courses">글로벌금융시장 / 금융시장과금융기관의변화 / 기업재무전략론 / 세무의사결정론 / 재무제표분석론 / 재무회계론 / 증권투자의이해 / 핀테크와행동재무 / 회계와경영의사결정 / 회계와비즈니스모델의이해</div>
+            </td>
+          </tr>
+          <tr>
+            <td class="curr-base">
+              <div>AI와 경영정보</div>
+            </td>
+            <td class="curr-deep">
+              <div class="curr-cat">Global / Innovation</div>
+              <div class="curr-courses">경영의사결정론 / 국제경영론 / 글로벌ESG론 / 글로벌비즈니스협상론 / 빅데이터분석론 / 창업실무론 / 최신정보시스템사례와전략 / 혁신과기술경영 / 해외글로벌세미나1~3 / 일과조직의관리와혁신</div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
 </main>
 
 <!-- ========== FOOTER ========== -->
@@ -379,8 +450,8 @@
 </footer>
 
 <!-- ========== SCRIPTS ========== -->
-<script src="js/data.js?v=20260621d"></script>
-<script src="js/app.js?v=20260621d"></script>
+<script src="js/data.js?v=20260621e"></script>
+<script src="js/app.js?v=20260621e"></script>
 <script type="module" src="js/firebase.js"></script>
 <script type="module">
   import {
