@@ -2716,21 +2716,32 @@ html, body { overflow-x: hidden; max-width: 100%; }
 
   /* 탭 네비 */
   .tab-nav { top: 62px; }
-  .tab-nav-inner { padding: 0 4px; overflow-x: auto; }
-  .tab-nav-inner::-webkit-scrollbar { display: none; }
+  /* 모바일: 가로 스크롤 대신 2줄로 줄바꿈 (4개씩) */
+  .tab-nav-inner { padding: 0 4px; flex-wrap: wrap; }
   .tab-btn {
-    padding: 12px 10px;
+    flex: 1 0 25%;
+    max-width: 25%;
+    justify-content: center;
+    text-align: center;
+    white-space: normal;       /* 라벨 길어도 줄바꿈 → 잘림 방지 */
+    line-height: 1.25;
+    padding: 10px 4px;
     font-size: 11px;
     gap: 4px;
-    flex-shrink: 0;
   }
   .tab-btn i { font-size: 13px; }
+  /* 홈페이지 링크도 일반 탭처럼 그리드에 맞춤 */
   .tab-btn-link {
-    margin-left: 0;
-    margin-top: 4px;
-    margin-bottom: 4px;
-    padding: 6px 12px !important;
+    flex: 1 0 25%;
+    max-width: 25%;
+    margin: 0 !important;
+    padding: 10px 4px !important;
     font-size: 11px !important;
+    font-weight: 500 !important;
+    border: none !important;
+    border-bottom: 3px solid transparent !important;
+    border-radius: 0 !important;
+    background: transparent !important;
   }
 
   /* 본문 패딩 */
@@ -2917,9 +2928,10 @@ html, body { overflow-x: hidden; max-width: 100%; }
   .logo-badge { width: 36px; height: 36px; font-size: 12px; }
   .header-titles h1 { font-size: 13px; }
 
-  /* 탭 */
+  /* 탭 (2줄 유지, 더 좁은 화면용 축소) */
   .tab-nav-inner { padding: 0; }
-  .tab-btn { padding: 11px 8px; font-size: 10px; }
+  .tab-btn { padding: 9px 3px; font-size: 10px; }
+  .tab-btn-link { padding: 9px 3px !important; font-size: 10px !important; }
   .tab-btn i { font-size: 12px; }
 
   /* 본문 */
