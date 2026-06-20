@@ -1,0 +1,12 @@
+# OS / 편집기
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# 원본 데이터 스프레드시트 (정적 사이트 구동에 불필요 · 개인정보 포함)
+*.xlsx
+
+# 작업용 임시 파일
+_*.json
+_*.txt
+.playwright-mcp/

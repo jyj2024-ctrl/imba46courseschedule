@@ -1,0 +1,717 @@
+// ============================================================
+// 성균관대 IMBA 46기 2026년 1학기 수업 시간표 데이터
+// ============================================================
+
+// 교시 시간 정보
+const CLASS_PERIODS = {
+  "0교시": { label: "0교시", time: "09:00~10:50", start: "09:00", end: "10:50" },
+  "1교시": { label: "1교시", time: "11:00~12:30", start: "11:00", end: "12:30" },
+  "2교시": { label: "2교시", time: "13:30~15:00", start: "13:30", end: "15:00" },
+  "3교시": { label: "3교시", time: "15:10~16:40", start: "15:10", end: "16:40" },
+  "4교시": { label: "4교시", time: "16:50~18:20", start: "16:50", end: "18:20" },
+  "저녁":  { label: "저녁",  time: "19:00~20:30", start: "19:00", end: "20:30" }
+};
+
+// 과목 목록 (1학기)
+const SPRING_COURSES = {
+  "창업실무론":                           { name: "창업실무론",                           professor: "김우진",    total: 13, color: "#e74c3c" },
+  "국제경영론":                           { name: "국제경영론",                           professor: "김상균",    total: 5,  color: "#3498db" },
+  "소비자경험관리":                       { name: "소비자경험관리",                       professor: "김학균",    total: 5,  color: "#2ecc71" },
+  "유통관리론":                           { name: "유통관리론",                           professor: "류성민",    total: 5,  color: "#9b59b6" },
+  "소비자행동론":                         { name: "소비자행동론",                         professor: "전선규",    total: 5,  color: "#f39c12" },
+  "글로벌비즈니스협상론":                 { name: "글로벌비즈니스협상론",                 professor: "김영상",    total: 4,  color: "#1abc9c" },
+  "경영자를위한데이터분석및통계적사고":   { name: "경영자를위한데이터분석및통계적사고",   professor: "장영봉",    total: 5,  color: "#e67e22" },
+  "조직행동론":                           { name: "조직행동론",                           professor: "신지선",    total: 4,  color: "#27ae60" },
+  "금융시장과금융기관의변화":             { name: "금융시장과금융기관의변화",             professor: "한중호",    total: 4,  color: "#2980b9" },
+  "회계와기업경영":                       { name: "회계와기업경영",                       professor: "이종은",    total: 5,  color: "#8e44ad" },
+  "빅데이터분석론":                       { name: "빅데이터분석론",                       professor: "변종복",    total: 5,  color: "#d35400" },
+  "마케팅관리론(1분반)":                  { name: "마케팅관리론(1분반)",                  professor: "김지영",    total: 5,  color: "#c0392b" },
+  "마케팅관리론(2분반)":                  { name: "마케팅관리론(2분반)",                  professor: "한영지",    total: 5,  color: "#e53935" },
+  "핀테크와행동재무":                     { name: "핀테크와행동재무",                     professor: "김영한",    total: 4,  color: "#16a085" },
+  "회계와비즈니스모델의이해":             { name: "회계와비즈니스모델의이해",             professor: "조현권",    total: 4,  color: "#7f8c8d" },
+  "글로벌금융시장":                       { name: "글로벌금융시장",                       professor: "박영규",    total: 5,  color: "#2c3e50" },
+  "마케팅믹스론":                         { name: "마케팅믹스론",                         professor: "이석규",    total: 5,  color: "#e91e63" },
+  "재무제표분석론":                       { name: "재무제표분석론",                       professor: "최영수",    total: 5,  color: "#5c6bc0" },
+  "경영전략론":                           { name: "경영전략론",                           professor: "문철우",    total: 5,  color: "#00897b" },
+  "글로벌ESG론":                          { name: "글로벌ESG론",                          professor: "정홍주",    total: 5,  color: "#558b2f" },
+  "기업재무전략론":                       { name: "기업재무전략론",                       professor: "송교직",    total: 5,  color: "#6d4c41" },
+  "마케팅조사론":                         { name: "마케팅조사론",                         professor: "이은주",    total: 5,  color: "#f57f17" },
+  "인적자원전략론":                       { name: "인적자원전략론",                       professor: "김안드레아", total: 5, color: "#4527a0" },
+  "일과조직의관리와혁신":                 { name: "일과조직의관리와혁신",                 professor: "박태윤",    total: 4,  color: "#00695c" },
+  "재무회계론":                           { name: "재무회계론",                           professor: "최희익",    total: 4,  color: "#283593" },
+  "증권투자의이해":                       { name: "증권투자의이해",                       professor: "안희준",    total: 5,  color: "#4e342e" },
+  "최신정보시스템사례와전략":             { name: "최신정보시스템사례와전략",             professor: "박기우",    total: 4,  color: "#37474f" },
+  "AI와경영정보":                         { name: "AI와경영정보",                         professor: "이건창",    total: 5,  color: "#0288d1" },
+};
+
+// ============================================================
+// 오프라인 수업 일정 (실제 데이터 반영)
+// ============================================================
+const SPRING_SCHEDULE = [
+
+  // ===== 03/07 =====
+  { date: "2026-03-07", period: "0교시", course: "창업실무론",                           sessionNo: 1,  type: "offline" },
+  { date: "2026-03-07", period: "1교시", course: "국제경영론",                           sessionNo: 1,  type: "offline" },
+  { date: "2026-03-07", period: "1교시", course: "소비자행동론",                         sessionNo: 1,  type: "offline" },
+  { date: "2026-03-07", period: "2교시", course: "소비자경험관리",                       sessionNo: 1,  type: "offline" },
+  { date: "2026-03-07", period: "2교시", course: "글로벌비즈니스협상론",                 sessionNo: 1,  type: "offline" },
+  { date: "2026-03-07", period: "2교시", course: "조직행동론",                           sessionNo: 1,  type: "offline" },
+  { date: "2026-03-07", period: "3교시", course: "유통관리론",                           sessionNo: 1,  type: "offline" },
+  { date: "2026-03-07", period: "3교시", course: "경영자를위한데이터분석및통계적사고",   sessionNo: 1,  type: "offline" },
+  { date: "2026-03-07", period: "3교시", course: "금융시장과금융기관의변화",             sessionNo: 1,  type: "offline" },
+  { date: "2026-03-07", period: "3교시", course: "회계와기업경영",                       sessionNo: 1,  type: "offline" },
+  { date: "2026-03-07", period: "4교시", course: "마케팅믹스론",                         sessionNo: 1,  type: "offline" },
+  { date: "2026-03-07", period: "4교시", course: "글로벌ESG론",                          sessionNo: 1,  type: "offline" },
+
+  // ===== 03/14 =====
+  { date: "2026-03-14", period: "0교시", course: "창업실무론",                           sessionNo: 2,  type: "offline" },
+  { date: "2026-03-14", period: "1교시", course: "빅데이터분석론",                       sessionNo: 1,  type: "offline" },
+  { date: "2026-03-14", period: "1교시", course: "핀테크와행동재무",                     sessionNo: 1,  type: "offline" },
+  { date: "2026-03-14", period: "1교시", course: "마케팅믹스론",                         sessionNo: 2,  type: "offline" },
+  { date: "2026-03-14", period: "1교시", course: "일과조직의관리와혁신",                 sessionNo: 1,  type: "offline" },
+  { date: "2026-03-14", period: "2교시", course: "유통관리론",                           sessionNo: 2,  type: "offline" },
+  { date: "2026-03-14", period: "2교시", course: "회계와비즈니스모델의이해",             sessionNo: 1,  type: "offline" },
+  { date: "2026-03-14", period: "2교시", course: "회계와기업경영",                       sessionNo: 2,  type: "offline" },
+  { date: "2026-03-14", period: "3교시", course: "마케팅관리론(1분반)",                  sessionNo: 1,  type: "offline" },
+  { date: "2026-03-14", period: "3교시", course: "글로벌금융시장",                       sessionNo: 1,  type: "offline" },
+  { date: "2026-03-14", period: "3교시", course: "재무제표분석론",                       sessionNo: 1,  type: "offline" },
+  { date: "2026-03-14", period: "3교시", course: "마케팅조사론",                         sessionNo: 1,  type: "offline" },
+  { date: "2026-03-14", period: "4교시", course: "증권투자의이해",                       sessionNo: 1,  type: "offline" },
+  { date: "2026-03-14", period: "4교시", course: "국제경영론",                           sessionNo: 2,  type: "offline" },
+  { date: "2026-03-14", period: "4교시", course: "AI와경영정보",                         sessionNo: 1,  type: "offline" },
+
+  // ===== 03/21 =====
+  { date: "2026-03-21", period: "0교시", course: "창업실무론",                           sessionNo: 3,  type: "offline" },
+  { date: "2026-03-21", period: "1교시", course: "재무제표분석론",                       sessionNo: 2,  type: "offline" },
+  { date: "2026-03-21", period: "1교시", course: "경영전략론",                           sessionNo: 1,  type: "offline" },
+  { date: "2026-03-21", period: "1교시", course: "재무회계론",                           sessionNo: 1,  type: "offline" },
+  { date: "2026-03-21", period: "1교시", course: "마케팅조사론",                         sessionNo: 2,  type: "offline" },
+  { date: "2026-03-21", period: "2교시", course: "빅데이터분석론",                       sessionNo: 2,  type: "offline" },
+  { date: "2026-03-21", period: "2교시", course: "글로벌ESG론",                          sessionNo: 2,  type: "offline" },
+  { date: "2026-03-21", period: "2교시", course: "핀테크와행동재무",                     sessionNo: 2,  type: "offline" },
+  { date: "2026-03-21", period: "2교시", course: "일과조직의관리와혁신",                 sessionNo: 2,  type: "offline" },
+  { date: "2026-03-21", period: "3교시", course: "마케팅관리론(2분반)",                  sessionNo: 1,  type: "offline" },
+  { date: "2026-03-21", period: "3교시", course: "증권투자의이해",                       sessionNo: 2,  type: "offline" },
+  { date: "2026-03-21", period: "3교시", course: "AI와경영정보",                         sessionNo: 2,  type: "offline" },
+  { date: "2026-03-21", period: "4교시", course: "소비자경험관리",                       sessionNo: 2,  type: "offline" },
+  { date: "2026-03-21", period: "4교시", course: "글로벌비즈니스협상론",                 sessionNo: 2,  type: "offline" },
+  { date: "2026-03-21", period: "4교시", course: "인적자원전략론",                       sessionNo: 1,  type: "offline" },
+  { date: "2026-03-21", period: "4교시", course: "최신정보시스템사례와전략",             sessionNo: 1,  type: "offline" },
+  { date: "2026-03-21", period: "4교시", course: "기업재무전략론",                       sessionNo: 1,  type: "offline" },
+
+  // ===== 03/28 =====
+  { date: "2026-03-28", period: "0교시", course: "창업실무론",                           sessionNo: 4,  type: "offline" },
+
+  // ===== 04/04 =====
+  { date: "2026-04-04", period: "0교시", course: "창업실무론",                           sessionNo: 5,  type: "offline" },
+  { date: "2026-04-04", period: "1교시", course: "회계와비즈니스모델의이해",             sessionNo: 2,  type: "offline" },
+  { date: "2026-04-04", period: "1교시", course: "경영자를위한데이터분석및통계적사고",   sessionNo: 2,  type: "offline" },
+  { date: "2026-04-04", period: "1교시", course: "회계와기업경영",                       sessionNo: 3,  type: "offline" },
+  { date: "2026-04-04", period: "2교시", course: "마케팅관리론(2분반)",                  sessionNo: 2,  type: "offline" },
+  { date: "2026-04-04", period: "2교시", course: "증권투자의이해",                       sessionNo: 3,  type: "offline" },
+  { date: "2026-04-04", period: "2교시", course: "소비자행동론",                         sessionNo: 2,  type: "offline" },
+  { date: "2026-04-04", period: "3교시", course: "소비자경험관리",                       sessionNo: 3,  type: "offline" },
+  { date: "2026-04-04", period: "3교시", course: "글로벌비즈니스협상론",                 sessionNo: 3,  type: "offline" },
+  { date: "2026-04-04", period: "3교시", course: "인적자원전략론",                       sessionNo: 2,  type: "offline" },
+  { date: "2026-04-04", period: "3교시", course: "최신정보시스템사례와전략",             sessionNo: 2,  type: "offline" },
+  { date: "2026-04-04", period: "3교시", course: "조직행동론",                           sessionNo: 2,  type: "offline" },
+  { date: "2026-04-04", period: "4교시", course: "글로벌금융시장",                       sessionNo: 2,  type: "offline" },
+  { date: "2026-04-04", period: "4교시", course: "경영전략론",                           sessionNo: 2,  type: "offline" },
+  { date: "2026-04-04", period: "4교시", course: "마케팅조사론",                         sessionNo: 3,  type: "offline" },
+  { date: "2026-04-04", period: "4교시", course: "재무회계론",                           sessionNo: 2,  type: "offline" },
+
+  // ===== 04/11 =====
+  { date: "2026-04-11", period: "0교시", course: "창업실무론",                           sessionNo: 6,  type: "offline" },
+  { date: "2026-04-11", period: "1교시", course: "글로벌비즈니스협상론",                 sessionNo: 4,  type: "offline" },
+  { date: "2026-04-11", period: "1교시", course: "인적자원전략론",                       sessionNo: 3,  type: "offline" },
+  { date: "2026-04-11", period: "1교시", course: "기업재무전략론",                       sessionNo: 2,  type: "offline" },
+  { date: "2026-04-11", period: "2교시", course: "글로벌금융시장",                       sessionNo: 3,  type: "offline" },
+  { date: "2026-04-11", period: "2교시", course: "마케팅관리론(1분반)",                  sessionNo: 2,  type: "offline" },
+  { date: "2026-04-11", period: "2교시", course: "재무제표분석론",                       sessionNo: 3,  type: "offline" },
+  { date: "2026-04-11", period: "2교시", course: "경영전략론",                           sessionNo: 3,  type: "offline" },
+  { date: "2026-04-11", period: "2교시", course: "마케팅조사론",                         sessionNo: 4,  type: "offline" },
+  { date: "2026-04-11", period: "3교시", course: "빅데이터분석론",                       sessionNo: 3,  type: "offline" },
+  { date: "2026-04-11", period: "3교시", course: "글로벌ESG론",                          sessionNo: 3,  type: "offline" },
+  { date: "2026-04-11", period: "3교시", course: "마케팅믹스론",                         sessionNo: 3,  type: "offline" },
+  { date: "2026-04-11", period: "3교시", course: "일과조직의관리와혁신",                 sessionNo: 3,  type: "offline" },
+  { date: "2026-04-11", period: "4교시", course: "유통관리론",                           sessionNo: 3,  type: "offline" },
+  { date: "2026-04-11", period: "4교시", course: "경영자를위한데이터분석및통계적사고",   sessionNo: 3,  type: "offline" },
+  { date: "2026-04-11", period: "4교시", course: "회계와기업경영",                       sessionNo: 4,  type: "offline" },
+
+  // ===== 04/18 중간고사 (과목별) =====
+  { date: "2026-04-18", period: "전교시", course: "창업실무론",                           sessionNo: 1, type: "offline", isExam: true, examGroup: "F", time: "09:20~10:20" },
+  { date: "2026-04-18", period: "전교시", course: "조직행동론",                           sessionNo: 1, type: "offline", isExam: true, examGroup: "D", time: "10:40~11:40" },
+  { date: "2026-04-18", period: "전교시", course: "글로벌비즈니스협상론",                 sessionNo: 1, type: "offline", isExam: true, examGroup: "D", time: "10:40~11:40" },
+  { date: "2026-04-18", period: "전교시", course: "기업재무전략론",                       sessionNo: 1, type: "offline", isExam: true, examGroup: "D", time: "10:40~11:40" },
+  { date: "2026-04-18", period: "전교시", course: "소비자경험관리",                       sessionNo: 1, type: "offline", isExam: true, examGroup: "D", time: "10:40~11:40" },
+  { date: "2026-04-18", period: "전교시", course: "인적자원전략론",                       sessionNo: 1, type: "offline", isExam: true, examGroup: "D", time: "10:40~11:40" },
+  { date: "2026-04-18", period: "전교시", course: "최신정보시스템사례와전략",             sessionNo: 1, type: "offline", isExam: true, examGroup: "D", time: "10:40~11:40" },
+  { date: "2026-04-18", period: "전교시", course: "글로벌ESG론",                          sessionNo: 1, type: "offline", isExam: true, examGroup: "B", time: "12:00~13:00" },
+  { date: "2026-04-18", period: "전교시", course: "마케팅믹스론",                         sessionNo: 1, type: "offline", isExam: true, examGroup: "B", time: "12:00~13:00" },
+  { date: "2026-04-18", period: "전교시", course: "빅데이터분석론",                       sessionNo: 1, type: "offline", isExam: true, examGroup: "B", time: "12:00~13:00" },
+  { date: "2026-04-18", period: "전교시", course: "일과조직의관리와혁신",                 sessionNo: 1, type: "offline", isExam: true, examGroup: "B", time: "12:00~13:00" },
+  { date: "2026-04-18", period: "전교시", course: "핀테크와행동재무",                     sessionNo: 1, type: "offline", isExam: true, examGroup: "B", time: "12:00~13:00" },
+  { date: "2026-04-18", period: "전교시", course: "AI와경영정보",                         sessionNo: 1, type: "offline", isExam: true, examGroup: "C", time: "13:20~14:20" },
+  { date: "2026-04-18", period: "전교시", course: "마케팅관리론(2분반)",                  sessionNo: 1, type: "offline", isExam: true, examGroup: "C", time: "13:20~14:20" },
+  { date: "2026-04-18", period: "전교시", course: "국제경영론",                           sessionNo: 1, type: "offline", isExam: true, examGroup: "C", time: "13:20~14:20" },
+  { date: "2026-04-18", period: "전교시", course: "소비자행동론",                         sessionNo: 1, type: "offline", isExam: true, examGroup: "C", time: "13:20~14:20" },
+  { date: "2026-04-18", period: "전교시", course: "증권투자의이해",                       sessionNo: 1, type: "offline", isExam: true, examGroup: "C", time: "13:20~14:20" },
+  { date: "2026-04-18", period: "전교시", course: "마케팅관리론(1분반)",                  sessionNo: 1, type: "offline", isExam: true, examGroup: "E", time: "14:40~15:40" },
+  { date: "2026-04-18", period: "전교시", course: "경영전략론",                           sessionNo: 1, type: "offline", isExam: true, examGroup: "E", time: "14:40~15:40" },
+  { date: "2026-04-18", period: "전교시", course: "글로벌금융시장",                       sessionNo: 1, type: "offline", isExam: true, examGroup: "E", time: "14:40~15:40" },
+  { date: "2026-04-18", period: "전교시", course: "마케팅조사론",                         sessionNo: 1, type: "offline", isExam: true, examGroup: "E", time: "14:40~15:40" },
+  { date: "2026-04-18", period: "전교시", course: "재무제표분석론",                       sessionNo: 1, type: "offline", isExam: true, examGroup: "E", time: "14:40~15:40" },
+  { date: "2026-04-18", period: "전교시", course: "재무회계론",                           sessionNo: 1, type: "offline", isExam: true, examGroup: "E", time: "14:40~15:40" },
+  { date: "2026-04-18", period: "전교시", course: "회계와기업경영",                       sessionNo: 1, type: "offline", isExam: true, examGroup: "A", time: "16:00~17:00" },
+  { date: "2026-04-18", period: "전교시", course: "경영자를위한데이터분석및통계적사고",   sessionNo: 1, type: "offline", isExam: true, examGroup: "A", time: "16:00~17:00" },
+  { date: "2026-04-18", period: "전교시", course: "금융시장과금융기관의변화",             sessionNo: 1, type: "offline", isExam: true, examGroup: "A", time: "16:00~17:00" },
+  { date: "2026-04-18", period: "전교시", course: "유통관리론",                           sessionNo: 1, type: "offline", isExam: true, examGroup: "A", time: "16:00~17:00" },
+  { date: "2026-04-18", period: "전교시", course: "회계와비즈니스모델의이해",             sessionNo: 1, type: "offline", isExam: true, examGroup: "A", time: "16:00~17:00" },
+
+  // ===== 04/25 =====
+  { date: "2026-04-25", period: "0교시", course: "창업실무론",                           sessionNo: 7,  type: "offline" },
+  { date: "2026-04-25", period: "1교시", course: "마케팅관리론(2분반)",                  sessionNo: 3,  type: "offline" },
+  { date: "2026-04-25", period: "1교시", course: "국제경영론",                           sessionNo: 3,  type: "offline" },
+  { date: "2026-04-25", period: "1교시", course: "소비자행동론",                         sessionNo: 3,  type: "offline" },
+  { date: "2026-04-25", period: "1교시", course: "AI와경영정보",                         sessionNo: 3,  type: "offline" },
+  { date: "2026-04-25", period: "2교시", course: "최신정보시스템사례와전략",             sessionNo: 3,  type: "offline" },
+  { date: "2026-04-25", period: "2교시", course: "조직행동론",                           sessionNo: 3,  type: "offline" },
+  { date: "2026-04-25", period: "3교시", course: "유통관리론",                           sessionNo: 4,  type: "offline" },
+  { date: "2026-04-25", period: "3교시", course: "경영자를위한데이터분석및통계적사고",   sessionNo: 4,  type: "offline" },
+  { date: "2026-04-25", period: "3교시", course: "금융시장과금융기관의변화",             sessionNo: 2,  type: "offline" },
+  { date: "2026-04-25", period: "4교시", course: "핀테크와행동재무",                     sessionNo: 3,  type: "offline" },
+
+  // ===== 05/02 =====
+  { date: "2026-05-02", period: "0교시", course: "창업실무론",                           sessionNo: 8,  type: "offline" },
+
+  // ===== 05/09 =====
+  { date: "2026-05-09", period: "0교시", course: "창업실무론",                           sessionNo: 9,  type: "offline" },
+  { date: "2026-05-09", period: "1교시", course: "유통관리론",                           sessionNo: 5,  type: "offline" },
+  { date: "2026-05-09", period: "1교시", course: "금융시장과금융기관의변화",             sessionNo: 3,  type: "offline" },
+  { date: "2026-05-09", period: "1교시", course: "회계와비즈니스모델의이해",             sessionNo: 3,  type: "offline" },
+  { date: "2026-05-09", period: "1교시", course: "회계와기업경영",                       sessionNo: 5,  type: "offline" },
+  { date: "2026-05-09", period: "2교시", course: "마케팅관리론(2분반)",                  sessionNo: 4,  type: "offline" },
+  { date: "2026-05-09", period: "2교시", course: "증권투자의이해",                       sessionNo: 4,  type: "offline" },
+  { date: "2026-05-09", period: "2교시", course: "국제경영론",                           sessionNo: 4,  type: "offline" },
+  { date: "2026-05-09", period: "2교시", course: "소비자행동론",                         sessionNo: 4,  type: "offline" },
+  { date: "2026-05-09", period: "2교시", course: "AI와경영정보",                         sessionNo: 4,  type: "offline" },
+  { date: "2026-05-09", period: "3교시", course: "마케팅관리론(1분반)",                  sessionNo: 3,  type: "offline" },
+  { date: "2026-05-09", period: "3교시", course: "글로벌금융시장",                       sessionNo: 4,  type: "offline" },
+  { date: "2026-05-09", period: "3교시", course: "재무제표분석론",                       sessionNo: 4,  type: "offline" },
+  { date: "2026-05-09", period: "3교시", course: "경영전략론",                           sessionNo: 4,  type: "offline" },
+  { date: "2026-05-09", period: "3교시", course: "재무회계론",                           sessionNo: 3,  type: "offline" },
+  { date: "2026-05-09", period: "4교시", course: "소비자경험관리",                       sessionNo: 4,  type: "offline" },
+  { date: "2026-05-09", period: "4교시", course: "기업재무전략론",                       sessionNo: 3,  type: "offline" },
+
+  // ===== 05/16 =====
+  { date: "2026-05-16", period: "0교시", course: "창업실무론",                           sessionNo: 10, type: "offline" },
+  { date: "2026-05-16", period: "1교시", course: "소비자경험관리",                       sessionNo: 5,  type: "offline" },
+  { date: "2026-05-16", period: "1교시", course: "인적자원전략론",                       sessionNo: 4,  type: "offline" },
+  { date: "2026-05-16", period: "1교시", course: "기업재무전략론",                       sessionNo: 4,  type: "offline" },
+  { date: "2026-05-16", period: "1교시", course: "조직행동론",                           sessionNo: 4,  type: "offline" },
+  { date: "2026-05-16", period: "2교시", course: "경영자를위한데이터분석및통계적사고",   sessionNo: 5,  type: "offline" },
+  { date: "2026-05-16", period: "2교시", course: "금융시장과금융기관의변화",             sessionNo: 4,  type: "offline" },
+  { date: "2026-05-16", period: "2교시", course: "회계와비즈니스모델의이해",             sessionNo: 4,  type: "offline" },
+  { date: "2026-05-16", period: "3교시", course: "빅데이터분석론",                       sessionNo: 4,  type: "offline" },
+  { date: "2026-05-16", period: "3교시", course: "글로벌ESG론",                          sessionNo: 4,  type: "offline" },
+  { date: "2026-05-16", period: "3교시", course: "핀테크와행동재무",                     sessionNo: 4,  type: "offline" },
+  { date: "2026-05-16", period: "3교시", course: "마케팅믹스론",                         sessionNo: 4,  type: "offline" },
+  { date: "2026-05-16", period: "3교시", course: "일과조직의관리와혁신",                 sessionNo: 4,  type: "offline" },
+  { date: "2026-05-16", period: "4교시", course: "마케팅관리론(1분반)",                  sessionNo: 4,  type: "offline" },
+  { date: "2026-05-16", period: "4교시", course: "글로벌금융시장",                       sessionNo: 5,  type: "offline" },
+
+  // ===== 05/23 =====
+  { date: "2026-05-23", period: "0교시", course: "창업실무론",                           sessionNo: 11, type: "offline" },
+
+  // ===== 05/30 =====
+  { date: "2026-05-30", period: "0교시", course: "창업실무론",                           sessionNo: 12, type: "offline" },
+  { date: "2026-05-30", period: "1교시", course: "마케팅관리론(1분반)",                  sessionNo: 5,  type: "offline" },
+  { date: "2026-05-30", period: "1교시", course: "재무제표분석론",                       sessionNo: 5,  type: "offline" },
+  { date: "2026-05-30", period: "1교시", course: "경영전략론",                           sessionNo: 5,  type: "offline" },
+  { date: "2026-05-30", period: "1교시", course: "재무회계론",                           sessionNo: 4,  type: "offline" },
+  { date: "2026-05-30", period: "1교시", course: "마케팅조사론",                         sessionNo: 5,  type: "offline" },
+  { date: "2026-05-30", period: "2교시", course: "빅데이터분석론",                       sessionNo: 5,  type: "offline" },
+  { date: "2026-05-30", period: "2교시", course: "마케팅믹스론",                         sessionNo: 5,  type: "offline" },
+  { date: "2026-05-30", period: "2교시", course: "글로벌ESG론",                          sessionNo: 5,  type: "offline" },
+  { date: "2026-05-30", period: "3교시", course: "인적자원전략론",                       sessionNo: 5,  type: "offline" },
+  { date: "2026-05-30", period: "3교시", course: "기업재무전략론",                       sessionNo: 5,  type: "offline" },
+  { date: "2026-05-30", period: "3교시", course: "최신정보시스템사례와전략",             sessionNo: 4,  type: "offline" },
+  { date: "2026-05-30", period: "4교시", course: "마케팅관리론(2분반)",                  sessionNo: 5,  type: "offline" },
+  { date: "2026-05-30", period: "4교시", course: "증권투자의이해",                       sessionNo: 5,  type: "offline" },
+  { date: "2026-05-30", period: "4교시", course: "국제경영론",                           sessionNo: 5,  type: "offline" },
+  { date: "2026-05-30", period: "4교시", course: "소비자행동론",                         sessionNo: 5,  type: "offline" },
+  { date: "2026-05-30", period: "4교시", course: "AI와경영정보",                         sessionNo: 5,  type: "offline" },
+
+  // ===== 06/06 =====
+  { date: "2026-06-06", period: "0교시", course: "창업실무론",                           sessionNo: 13, type: "offline" },
+
+  // ===== 06/13 기말고사 (과목별) =====
+  { date: "2026-06-13", period: "전교시", course: "창업실무론",                           sessionNo: 1, type: "offline", isExam: true, examGroup: "F", time: "09:20~10:20" },
+  { date: "2026-06-13", period: "전교시", course: "AI와경영정보",                         sessionNo: 1, type: "offline", isExam: true, examGroup: "C", time: "10:40~11:40" },
+  { date: "2026-06-13", period: "전교시", course: "마케팅관리론(2분반)",                  sessionNo: 1, type: "offline", isExam: true, examGroup: "C", time: "10:40~11:40" },
+  { date: "2026-06-13", period: "전교시", course: "국제경영론",                           sessionNo: 1, type: "offline", isExam: true, examGroup: "C", time: "10:40~11:40" },
+  { date: "2026-06-13", period: "전교시", course: "소비자행동론",                         sessionNo: 1, type: "offline", isExam: true, examGroup: "C", time: "10:40~11:40" },
+  { date: "2026-06-13", period: "전교시", course: "증권투자의이해",                       sessionNo: 1, type: "offline", isExam: true, examGroup: "C", time: "10:40~11:40" },
+  { date: "2026-06-13", period: "전교시", course: "조직행동론",                           sessionNo: 1, type: "offline", isExam: true, examGroup: "D", time: "12:00~13:00" },
+  { date: "2026-06-13", period: "전교시", course: "글로벌비즈니스협상론",                 sessionNo: 1, type: "offline", isExam: true, examGroup: "D", time: "12:00~13:00" },
+  { date: "2026-06-13", period: "전교시", course: "기업재무전략론",                       sessionNo: 1, type: "offline", isExam: true, examGroup: "D", time: "12:00~13:00" },
+  { date: "2026-06-13", period: "전교시", course: "소비자경험관리",                       sessionNo: 1, type: "offline", isExam: true, examGroup: "D", time: "12:00~13:00" },
+  { date: "2026-06-13", period: "전교시", course: "인적자원전략론",                       sessionNo: 1, type: "offline", isExam: true, examGroup: "D", time: "12:00~13:00" },
+  { date: "2026-06-13", period: "전교시", course: "최신정보시스템사례와전략",             sessionNo: 1, type: "offline", isExam: true, examGroup: "D", time: "12:00~13:00" },
+  { date: "2026-06-13", period: "전교시", course: "마케팅관리론(1분반)",                  sessionNo: 1, type: "offline", isExam: true, examGroup: "E", time: "13:20~14:20" },
+  { date: "2026-06-13", period: "전교시", course: "경영전략론",                           sessionNo: 1, type: "offline", isExam: true, examGroup: "E", time: "13:20~14:20" },
+  { date: "2026-06-13", period: "전교시", course: "글로벌금융시장",                       sessionNo: 1, type: "offline", isExam: true, examGroup: "E", time: "13:20~14:20" },
+  { date: "2026-06-13", period: "전교시", course: "마케팅조사론",                         sessionNo: 1, type: "offline", isExam: true, examGroup: "E", time: "13:20~14:20" },
+  { date: "2026-06-13", period: "전교시", course: "재무제표분석론",                       sessionNo: 1, type: "offline", isExam: true, examGroup: "E", time: "13:20~14:20" },
+  { date: "2026-06-13", period: "전교시", course: "재무회계론",                           sessionNo: 1, type: "offline", isExam: true, examGroup: "E", time: "13:20~14:20" },
+  { date: "2026-06-13", period: "전교시", course: "회계와기업경영",                       sessionNo: 1, type: "offline", isExam: true, examGroup: "A", time: "14:40~15:40" },
+  { date: "2026-06-13", period: "전교시", course: "경영자를위한데이터분석및통계적사고",   sessionNo: 1, type: "offline", isExam: true, examGroup: "A", time: "14:40~15:40" },
+  { date: "2026-06-13", period: "전교시", course: "금융시장과금융기관의변화",             sessionNo: 1, type: "offline", isExam: true, examGroup: "A", time: "14:40~15:40" },
+  { date: "2026-06-13", period: "전교시", course: "유통관리론",                           sessionNo: 1, type: "offline", isExam: true, examGroup: "A", time: "14:40~15:40" },
+  { date: "2026-06-13", period: "전교시", course: "회계와비즈니스모델의이해",             sessionNo: 1, type: "offline", isExam: true, examGroup: "A", time: "14:40~15:40" },
+  { date: "2026-06-13", period: "전교시", course: "글로벌ESG론",                          sessionNo: 1, type: "offline", isExam: true, examGroup: "B", time: "16:00~17:00" },
+  { date: "2026-06-13", period: "전교시", course: "마케팅믹스론",                         sessionNo: 1, type: "offline", isExam: true, examGroup: "B", time: "16:00~17:00" },
+  { date: "2026-06-13", period: "전교시", course: "빅데이터분석론",                       sessionNo: 1, type: "offline", isExam: true, examGroup: "B", time: "16:00~17:00" },
+  { date: "2026-06-13", period: "전교시", course: "일과조직의관리와혁신",                 sessionNo: 1, type: "offline", isExam: true, examGroup: "B", time: "16:00~17:00" },
+  { date: "2026-06-13", period: "전교시", course: "핀테크와행동재무",                     sessionNo: 1, type: "offline", isExam: true, examGroup: "B", time: "16:00~17:00" },
+];
+
+// ============================================================
+// 화상 Q&A 일정 (온라인)
+// ============================================================
+const SPRING_QNA = [
+  // AI와경영정보 (이건창)
+  { date: "2026-04-13", period: "저녁", course: "AI와경영정보",                       sessionNo: 1, type: "qna", time: "21:00~22:00" },
+  { date: "2026-05-11", period: "저녁", course: "AI와경영정보",                       sessionNo: 2, type: "qna", time: "21:00~22:00" },
+  { date: "2026-05-18", period: "저녁", course: "AI와경영정보",                       sessionNo: 3, type: "qna", time: "21:00~22:00" },
+  // 경영자를위한데이터분석및통계적사고 (장영봉)
+  { date: "2026-03-17", period: "저녁", course: "경영자를위한데이터분석및통계적사고",  sessionNo: 1, type: "qna", time: "19:00~20:00" },
+  { date: "2026-04-28", period: "저녁", course: "경영자를위한데이터분석및통계적사고",  sessionNo: 2, type: "qna", time: "20:00~21:00" },
+  { date: "2026-06-02", period: "저녁", course: "경영자를위한데이터분석및통계적사고",  sessionNo: 3, type: "qna", time: "20:00~21:00" },
+  // 경영전략론 (문철우)
+  { date: "2026-03-11", period: "저녁", course: "경영전략론",                         sessionNo: 1, type: "qna", time: "19:00~20:00" },
+  { date: "2026-03-26", period: "저녁", course: "경영전략론",                         sessionNo: 2, type: "qna", time: "19:00~20:00" },
+  { date: "2026-05-13", period: "저녁", course: "경영전략론",                         sessionNo: 3, type: "qna", time: "19:00~20:00" },
+  // 국제경영론 (김상균)
+  { date: "2026-03-19", period: "저녁", course: "국제경영론",                         sessionNo: 1, type: "qna", time: "19:00~20:00" },
+  { date: "2026-04-09", period: "저녁", course: "국제경영론",                         sessionNo: 2, type: "qna", time: "19:00~20:00" },
+  { date: "2026-05-14", period: "저녁", course: "국제경영론",                         sessionNo: 3, type: "qna", time: "19:00~20:00" },
+  // 글로벌ESG론 (정홍주)
+  { date: "2026-03-24", period: "저녁", course: "글로벌ESG론",                        sessionNo: 1, type: "qna", time: "19:00~20:00" },
+  { date: "2026-04-16", period: "저녁", course: "글로벌ESG론",                        sessionNo: 2, type: "qna", time: "19:00~20:00" },
+  { date: "2026-06-09", period: "저녁", course: "글로벌ESG론",                        sessionNo: 3, type: "qna", time: "19:00~20:00" },
+  // 글로벌금융시장 (박영규)
+  { date: "2026-03-10", period: "저녁", course: "글로벌금융시장",                      sessionNo: 1, type: "qna", time: "21:00~22:00" },
+  { date: "2026-04-28", period: "저녁", course: "글로벌금융시장",                      sessionNo: 2, type: "qna", time: "21:00~22:00" },
+  { date: "2026-06-02", period: "저녁", course: "글로벌금융시장",                      sessionNo: 3, type: "qna", time: "21:00~22:00" },
+  // 글로벌비즈니스협상론 (김영상)
+  { date: "2026-03-03", period: "저녁", course: "글로벌비즈니스협상론",                sessionNo: 1, type: "qna", time: "20:00~21:00" },
+  { date: "2026-04-06", period: "저녁", course: "글로벌비즈니스협상론",                sessionNo: 2, type: "qna", time: "19:00~20:00" },
+  { date: "2026-06-01", period: "저녁", course: "글로벌비즈니스협상론",                sessionNo: 3, type: "qna", time: "19:00~20:00" },
+  // 금융시장과금융기관의변화 (한중호)
+  { date: "2026-04-13", period: "저녁", course: "금융시장과금융기관의변화",             sessionNo: 1, type: "qna", time: "20:00~21:00" },
+  { date: "2026-04-22", period: "저녁", course: "금융시장과금융기관의변화",             sessionNo: 2, type: "qna", time: "21:00~22:00" },
+  { date: "2026-06-08", period: "저녁", course: "금융시장과금융기관의변화",             sessionNo: 3, type: "qna", time: "20:00~21:00" },
+  // 기업재무전략론 (송교직)
+  { date: "2026-03-11", period: "저녁", course: "기업재무전략론",                      sessionNo: 1, type: "qna", time: "21:00~22:00" },
+  { date: "2026-04-15", period: "저녁", course: "기업재무전략론",                      sessionNo: 2, type: "qna", time: "21:00~22:00" },
+  { date: "2026-06-10", period: "저녁", course: "기업재무전략론",                      sessionNo: 3, type: "qna", time: "21:00~22:00" },
+  // 마케팅관리론(1분반) (김지영)
+  { date: "2026-03-25", period: "저녁", course: "마케팅관리론(1분반)",                 sessionNo: 1, type: "qna", time: "19:00~20:00" },
+  { date: "2026-04-22", period: "저녁", course: "마케팅관리론(1분반)",                 sessionNo: 2, type: "qna", time: "19:00~20:00" },
+  { date: "2026-04-29", period: "저녁", course: "마케팅관리론(1분반)",                 sessionNo: 3, type: "qna", time: "19:00~20:00" },
+  // 마케팅관리론(2분반) (한영지)
+  { date: "2026-03-04", period: "저녁", course: "마케팅관리론(2분반)",                 sessionNo: 1, type: "qna", time: "21:00~22:00" },
+  { date: "2026-04-01", period: "저녁", course: "마케팅관리론(2분반)",                 sessionNo: 2, type: "qna", time: "21:00~22:00" },
+  { date: "2026-05-13", period: "저녁", course: "마케팅관리론(2분반)",                 sessionNo: 3, type: "qna", time: "21:00~22:00" },
+  // 마케팅믹스론 (이석규)
+  { date: "2026-03-18", period: "저녁", course: "마케팅믹스론",                        sessionNo: 1, type: "qna", time: "21:00~22:00" },
+  { date: "2026-04-08", period: "저녁", course: "마케팅믹스론",                        sessionNo: 2, type: "qna", time: "21:00~22:00" },
+  { date: "2026-04-29", period: "저녁", course: "마케팅믹스론",                        sessionNo: 3, type: "qna", time: "21:00~22:00" },
+  // 마케팅조사론 (이은주)
+  { date: "2026-05-13", period: "저녁", course: "마케팅조사론",                        sessionNo: 1, type: "qna", time: "20:00~21:00" },
+  { date: "2026-05-26", period: "저녁", course: "마케팅조사론",                        sessionNo: 2, type: "qna", time: "20:00~21:00" },
+  { date: "2026-06-08", period: "저녁", course: "마케팅조사론",                        sessionNo: 3, type: "qna", time: "19:00~20:00" },
+  // 빅데이터분석론 (변종복)
+  { date: "2026-04-01", period: "저녁", course: "빅데이터분석론",                      sessionNo: 1, type: "qna", time: "19:00~20:00" },
+  { date: "2026-04-22", period: "저녁", course: "빅데이터분석론",                      sessionNo: 2, type: "qna", time: "20:00~21:00" },
+  { date: "2026-05-20", period: "저녁", course: "빅데이터분석론",                      sessionNo: 3, type: "qna", time: "19:00~20:00" },
+  // 소비자경험관리 (김학균)
+  { date: "2026-04-15", period: "저녁", course: "소비자경험관리",                      sessionNo: 1, type: "qna", time: "20:00~21:00" },
+  { date: "2026-05-06", period: "저녁", course: "소비자경험관리",                      sessionNo: 2, type: "qna", time: "20:00~21:00" },
+  { date: "2026-06-10", period: "저녁", course: "소비자경험관리",                      sessionNo: 3, type: "qna", time: "20:00~21:00" },
+  // 소비자행동론 (전선규)
+  { date: "2026-04-14", period: "저녁", course: "소비자행동론",                        sessionNo: 1, type: "qna", time: "20:00~21:00" },
+  { date: "2026-04-21", period: "저녁", course: "소비자행동론",                        sessionNo: 2, type: "qna", time: "20:00~21:00" },
+  { date: "2026-06-09", period: "저녁", course: "소비자행동론",                        sessionNo: 3, type: "qna", time: "20:00~21:00" },
+  // 유통관리론 (류성민)
+  { date: "2026-03-06", period: "저녁", course: "유통관리론",                          sessionNo: 1, type: "qna", time: "19:00~20:00" },
+  { date: "2026-04-17", period: "저녁", course: "유통관리론",                          sessionNo: 2, type: "qna", time: "19:00~20:00" },
+  { date: "2026-06-05", period: "저녁", course: "유통관리론",                          sessionNo: 3, type: "qna", time: "19:00~20:00" },
+  // 인적자원전략론 (김안드레아)
+  { date: "2026-03-04", period: "저녁", course: "인적자원전략론",                      sessionNo: 1, type: "qna", time: "19:00~20:00" },
+  { date: "2026-06-02", period: "저녁", course: "인적자원전략론",                      sessionNo: 2, type: "qna", time: "19:00~20:00" },
+  { date: "2026-06-04", period: "저녁", course: "인적자원전략론",                      sessionNo: 3, type: "qna", time: "19:00~20:00" },
+  // 일과조직의관리와혁신 (박태윤)
+  { date: "2026-03-17", period: "저녁", course: "일과조직의관리와혁신",                sessionNo: 1, type: "qna", time: "21:00~22:00" },
+  { date: "2026-04-07", period: "저녁", course: "일과조직의관리와혁신",                sessionNo: 2, type: "qna", time: "19:00~20:00" },
+  { date: "2026-05-19", period: "저녁", course: "일과조직의관리와혁신",                sessionNo: 3, type: "qna", time: "19:00~20:00" },
+  // 재무제표분석론 (최영수)
+  { date: "2026-03-30", period: "저녁", course: "재무제표분석론",                      sessionNo: 1, type: "qna", time: "19:00~20:00" },
+  { date: "2026-04-27", period: "저녁", course: "재무제표분석론",                      sessionNo: 2, type: "qna", time: "19:00~20:00" },
+  { date: "2026-05-18", period: "저녁", course: "재무제표분석론",                      sessionNo: 3, type: "qna", time: "19:00~20:00" },
+  // 재무회계론 (최희익)
+  { date: "2026-03-05", period: "저녁", course: "재무회계론",                          sessionNo: 1, type: "qna", time: "21:00~22:00" },
+  { date: "2026-04-23", period: "저녁", course: "재무회계론",                          sessionNo: 2, type: "qna", time: "21:00~22:00" },
+  { date: "2026-05-21", period: "저녁", course: "재무회계론",                          sessionNo: 3, type: "qna", time: "21:00~22:00" },
+  // 조직행동론 (신지선)
+  { date: "2026-03-25", period: "저녁", course: "조직행동론",                          sessionNo: 1, type: "qna", time: "20:00~21:00" },
+  { date: "2026-04-08", period: "저녁", course: "조직행동론",                          sessionNo: 2, type: "qna", time: "20:00~21:00" },
+  { date: "2026-06-04", period: "저녁", course: "조직행동론",                          sessionNo: 3, type: "qna", time: "20:00~21:00" },
+  // 증권투자의이해 (안희준)
+  { date: "2026-04-15", period: "저녁", course: "증권투자의이해",                      sessionNo: 1, type: "qna", time: "19:00~20:00" },
+  { date: "2026-05-20", period: "저녁", course: "증권투자의이해",                      sessionNo: 2, type: "qna", time: "20:00~21:00" },
+  { date: "2026-06-10", period: "저녁", course: "증권투자의이해",                      sessionNo: 3, type: "qna", time: "19:00~20:00" },
+  // 최신정보시스템사례와전략 (박기우)
+  { date: "2026-03-05", period: "저녁", course: "최신정보시스템사례와전략",             sessionNo: 1, type: "qna", time: "19:00~20:00" },
+  { date: "2026-05-07", period: "저녁", course: "최신정보시스템사례와전략",             sessionNo: 2, type: "qna", time: "19:00~20:00" },
+  { date: "2026-05-28", period: "저녁", course: "최신정보시스템사례와전략",             sessionNo: 3, type: "qna", time: "19:00~20:00" },
+  // 핀테크와행동재무 (김영한)
+  { date: "2026-04-01", period: "저녁", course: "핀테크와행동재무",                    sessionNo: 1, type: "qna", time: "20:00~21:00" },
+  { date: "2026-05-06", period: "저녁", course: "핀테크와행동재무",                    sessionNo: 2, type: "qna", time: "19:00~20:00" },
+  { date: "2026-05-27", period: "저녁", course: "핀테크와행동재무",                    sessionNo: 3, type: "qna", time: "20:00~21:00" },
+  // 회계와기업경영 (이종은)
+  { date: "2026-05-18", period: "저녁", course: "회계와기업경영",                      sessionNo: 1, type: "qna", time: "20:00~21:00" },
+  { date: "2026-06-04", period: "저녁", course: "회계와기업경영",                      sessionNo: 2, type: "qna", time: "21:00~22:00" },
+  { date: "2026-06-08", period: "저녁", course: "회계와기업경영",                      sessionNo: 3, type: "qna", time: "21:00~22:00" },
+  // 회계와비즈니스모델의이해 (조현권)
+  { date: "2026-03-10", period: "저녁", course: "회계와비즈니스모델의이해",             sessionNo: 1, type: "qna", time: "19:00~20:00" },
+  { date: "2026-03-31", period: "저녁", course: "회계와비즈니스모델의이해",             sessionNo: 2, type: "qna", time: "19:00~20:00" },
+  { date: "2026-04-28", period: "저녁", course: "회계와비즈니스모델의이해",             sessionNo: 3, type: "qna", time: "19:00~20:00" },
+];
+
+// ============================================================
+// 2026년 여름집중학기 (별도 학기) — 상단 학기 토글로 1학기와 분리 표시
+//   · 과목명은 (여름) 접두사로 1학기 동명 과목과 구분
+//   · SUMMER_STUDENTS(원우 수강 명단)는 추후 채워질 예정 (현재 비어 있음)
+// ============================================================
+const SUMMER_COURSES = {
+  "(여름)마케팅조사론":               { name: "(여름)마케팅조사론",               professor: "이은주", total: 4, color: "#f57f17" },
+  "(여름)경영전략론":                 { name: "(여름)경영전략론",                 professor: "문철우", total: 4, color: "#00897b" },
+  "(여름)마케팅믹스론":               { name: "(여름)마케팅믹스론",               professor: "이석규", total: 4, color: "#e91e63" },
+  "(여름)기업재무전략론":             { name: "(여름)기업재무전략론",             professor: "송교직", total: 4, color: "#6d4c41" },
+  "(여름)증권투자의이해":             { name: "(여름)증권투자의이해",             professor: "안희준", total: 4, color: "#4e342e" },
+  "(여름)금융시장과금융기관의변화":   { name: "(여름)금융시장과금융기관의변화",   professor: "한중호", total: 4, color: "#2980b9" },
+  "(여름)회계와기업경영":             { name: "(여름)회계와기업경영",             professor: "이종은", total: 4, color: "#8e44ad" },
+  "(여름)해외글로벌세미나":           { name: "(여름)해외글로벌세미나",           professor: "김영한", total: 3, color: "#00838f" },
+};
+
+// 여름집중학기 — 토요일 오프라인 수업 + 해외글로벌세미나 + 중간/기말고사
+const SUMMER_OFFLINE = [
+  // ===== 1주차 06/27 (토) =====
+  { date: "2026-06-27", period: "오전", time: "10:00~11:30", course: "(여름)회계와기업경영",           sessionNo: 1, total: 4, type: "offline", summer: true },
+  { date: "2026-06-27", period: "오전", time: "10:00~11:30", course: "(여름)증권투자의이해",           sessionNo: 1, total: 4, type: "offline", summer: true },
+  { date: "2026-06-27", period: "오전", time: "10:00~12:00", course: "(여름)마케팅믹스론",             sessionNo: 1, total: 4, type: "offline", summer: true },
+  { date: "2026-06-27", period: "오후", time: "13:00~14:30", course: "(여름)마케팅조사론",             sessionNo: 1, total: 4, type: "offline", summer: true },
+  { date: "2026-06-27", period: "오후", time: "13:00~15:00", course: "(여름)회계와기업경영",           sessionNo: 2, total: 4, type: "offline", summer: true },
+  { date: "2026-06-27", period: "오후", time: "13:00~15:00", course: "(여름)금융시장과금융기관의변화", sessionNo: 1, total: 4, type: "offline", summer: true },
+  { date: "2026-06-27", period: "오후", time: "14:00~17:00", course: "(여름)해외글로벌세미나", note: "사전학습 1차", sessionNo: 1, total: 3, type: "offline", summer: true, kind: "seminar" },
+
+  // ===== 2주차 07/04 (토) =====
+  { date: "2026-07-04", period: "오전", time: "10:00~12:00", course: "(여름)경영전략론",               sessionNo: 1, total: 4, type: "offline", summer: true },
+  { date: "2026-07-04", period: "오전", time: "10:00~12:00", course: "(여름)마케팅믹스론",             sessionNo: 2, total: 4, type: "offline", summer: true },
+  { date: "2026-07-04", period: "오전", time: "10:00~12:00", course: "(여름)증권투자의이해",           sessionNo: 2, total: 4, type: "offline", summer: true },
+  { date: "2026-07-04", period: "오후", time: "13:00~14:30", course: "(여름)경영전략론",               sessionNo: 2, total: 4, type: "offline", summer: true },
+  { date: "2026-07-04", period: "오후", time: "13:00~15:00", course: "(여름)마케팅조사론",             sessionNo: 2, total: 4, type: "offline", summer: true },
+  { date: "2026-07-04", period: "오후", time: "13:00~15:00", course: "(여름)기업재무전략론",           sessionNo: 1, total: 4, type: "offline", summer: true },
+  { date: "2026-07-04", period: "오후", time: "14:00~16:00", course: "(여름)해외글로벌세미나", note: "사전학습 2차", sessionNo: 2, total: 3, type: "offline", summer: true, kind: "seminar" },
+
+  // ===== 3주차 07/11 (토) =====
+  { date: "2026-07-11", period: "오전", time: "10:00~12:00", course: "(여름)기업재무전략론",           sessionNo: 2, total: 4, type: "offline", summer: true },
+  { date: "2026-07-11", period: "오후", time: "13:00~14:30", course: "(여름)기업재무전략론",           sessionNo: 3, total: 4, type: "offline", summer: true },
+  { date: "2026-07-11", period: "시험", time: "",            course: "(여름)중간고사", type: "offline", summer: true, kind: "exam", isExam: true },
+
+  // ===== 5주차 07/25 (토) =====
+  { date: "2026-07-25", period: "오전", time: "10:00~12:00", course: "(여름)경영전략론",               sessionNo: 3, total: 4, type: "offline", summer: true },
+  { date: "2026-07-25", period: "오전", time: "10:00~12:00", course: "(여름)마케팅믹스론",             sessionNo: 3, total: 4, type: "offline", summer: true },
+  { date: "2026-07-25", period: "오전", time: "10:00~12:00", course: "(여름)회계와기업경영",           sessionNo: 3, total: 4, type: "offline", summer: true },
+  { date: "2026-07-25", period: "오전", time: "10:00~12:00", course: "(여름)증권투자의이해",           sessionNo: 3, total: 4, type: "offline", summer: true },
+  { date: "2026-07-25", period: "오후", time: "13:00~15:00", course: "(여름)마케팅조사론",             sessionNo: 3, total: 4, type: "offline", summer: true },
+  { date: "2026-07-25", period: "오후", time: "13:00~15:00", course: "(여름)경영전략론",               sessionNo: 4, total: 4, type: "offline", summer: true },
+  { date: "2026-07-25", period: "오후", time: "13:00~15:00", course: "(여름)회계와기업경영",           sessionNo: 4, total: 4, type: "offline", summer: true },
+  { date: "2026-07-25", period: "오후", time: "13:00~15:00", course: "(여름)금융시장과금융기관의변화", sessionNo: 2, total: 4, type: "offline", summer: true },
+
+  // ===== 6주차 08/01 (토) =====
+  { date: "2026-08-01", period: "오전", time: "10:00~11:30", course: "(여름)증권투자의이해",           sessionNo: 4, total: 4, type: "offline", summer: true },
+  { date: "2026-08-01", period: "오전", time: "11:00~12:30", course: "(여름)마케팅믹스론",             sessionNo: 4, total: 4, type: "offline", summer: true },
+  { date: "2026-08-01", period: "오전", time: "11:00~12:30", course: "(여름)금융시장과금융기관의변화", sessionNo: 3, total: 4, type: "offline", summer: true },
+  { date: "2026-08-01", period: "오후", time: "13:00~15:00", course: "(여름)마케팅조사론",             sessionNo: 4, total: 4, type: "offline", summer: true },
+  { date: "2026-08-01", period: "오후", time: "13:00~15:00", course: "(여름)기업재무전략론",           sessionNo: 4, total: 4, type: "offline", summer: true },
+  { date: "2026-08-01", period: "오후", time: "13:00~15:00", course: "(여름)금융시장과금융기관의변화", sessionNo: 4, total: 4, type: "offline", summer: true },
+
+  // ===== 7주차 08/08 (토) =====
+  { date: "2026-08-08", period: "오후", time: "14:00~16:00", course: "(여름)해외글로벌세미나", note: "사후발표 3차", sessionNo: 3, total: 3, type: "offline", summer: true, kind: "seminar" },
+  { date: "2026-08-08", period: "시험", time: "",            course: "(여름)기말고사", type: "offline", summer: true, kind: "exam", isExam: true },
+];
+
+// 여름집중학기 — 평일 저녁 화상 Q&A 수업
+const SUMMER_QNA = [
+  { date: "2026-06-24", period: "저녁", time: "20:00~21:00", course: "(여름)마케팅조사론",             sessionNo: 1, total: 3, type: "qna", summer: true },
+  { date: "2026-06-30", period: "저녁", time: "20:00~21:00", course: "(여름)경영전략론",               sessionNo: 1, total: 3, type: "qna", summer: true },
+  { date: "2026-07-01", period: "저녁", time: "19:00~20:00", course: "(여름)마케팅믹스론",             sessionNo: 1, total: 3, type: "qna", summer: true },
+  { date: "2026-07-01", period: "저녁", time: "19:00~20:00", course: "(여름)기업재무전략론",           sessionNo: 1, total: 3, type: "qna", summer: true },
+  { date: "2026-07-02", period: "저녁", time: "20:00~21:00", course: "(여름)증권투자의이해",           sessionNo: 1, total: 3, type: "qna", summer: true },
+  { date: "2026-07-06", period: "저녁", time: "20:00~21:00", course: "(여름)금융시장과금융기관의변화", sessionNo: 1, total: 3, type: "qna", summer: true },
+  { date: "2026-07-06", period: "저녁", time: "21:00~22:00", course: "(여름)회계와기업경영",           sessionNo: 1, total: 3, type: "qna", summer: true },
+  { date: "2026-07-07", period: "저녁", time: "20:00~21:00", course: "(여름)경영전략론",               sessionNo: 2, total: 3, type: "qna", summer: true },
+  { date: "2026-07-08", period: "저녁", time: "19:00~20:00", course: "(여름)마케팅믹스론",             sessionNo: 2, total: 3, type: "qna", summer: true },
+  { date: "2026-07-08", period: "저녁", time: "20:00~21:00", course: "(여름)마케팅조사론",             sessionNo: 2, total: 3, type: "qna", summer: true },
+  { date: "2026-07-14", period: "저녁", time: "20:00~21:00", course: "(여름)경영전략론",               sessionNo: 3, total: 3, type: "qna", summer: true },
+  { date: "2026-07-15", period: "저녁", time: "20:00~21:00", course: "(여름)금융시장과금융기관의변화", sessionNo: 2, total: 3, type: "qna", summer: true },
+  { date: "2026-07-20", period: "저녁", time: "21:00~22:00", course: "(여름)회계와기업경영",           sessionNo: 2, total: 3, type: "qna", summer: true },
+  { date: "2026-07-23", period: "저녁", time: "20:00~21:00", course: "(여름)증권투자의이해",           sessionNo: 2, total: 3, type: "qna", summer: true },
+  { date: "2026-07-27", period: "저녁", time: "21:00~22:00", course: "(여름)회계와기업경영",           sessionNo: 3, total: 3, type: "qna", summer: true },
+  { date: "2026-07-29", period: "저녁", time: "20:00~21:00", course: "(여름)마케팅조사론",             sessionNo: 3, total: 3, type: "qna", summer: true },
+  { date: "2026-07-30", period: "저녁", time: "20:00~21:00", course: "(여름)증권투자의이해",           sessionNo: 3, total: 3, type: "qna", summer: true },
+  { date: "2026-08-03", period: "저녁", time: "19:00~20:00", course: "(여름)기업재무전략론",           sessionNo: 2, total: 3, type: "qna", summer: true },
+  { date: "2026-08-04", period: "저녁", time: "20:00~21:00", course: "(여름)금융시장과금융기관의변화", sessionNo: 3, total: 3, type: "qna", summer: true },
+  { date: "2026-08-05", period: "저녁", time: "19:00~20:00", course: "(여름)마케팅믹스론",             sessionNo: 3, total: 3, type: "qna", summer: true },
+  { date: "2026-08-06", period: "저녁", time: "19:00~20:00", course: "(여름)기업재무전략론",           sessionNo: 3, total: 3, type: "qna", summer: true },
+];
+
+// ============================================================
+// 46기 원우 명단 및 수강 과목 (실제 데이터)
+// ============================================================
+const SPRING_STUDENTS = [
+  { name: "강병희",  location: "국내", company: "GS리테일",                          courses: ["마케팅믹스론", "재무제표분석론", "회계와비즈니스모델의이해"] },
+  { name: "고세진",  location: "베트남", company: "서흥베트남",                       courses: ["국제경영론", "글로벌ESG론", "재무회계론"] },
+  { name: "공부석",  location: "국내", company: "현대모비스",                         courses: ["마케팅믹스론", "증권투자의이해", "회계와기업경영"] },
+  { name: "김광식",  location: "베트남", company: "EDK VINA CO., LTD.",              courses: ["재무회계론", "증권투자의이해", "회계와비즈니스모델의이해"] },
+  { name: "김나영",  location: "국내", company: "주식회사 당근마켓",                  courses: ["금융시장과금융기관의변화", "인적자원전략론", "일과조직의관리와혁신"] },
+  { name: "김대억",  location: "국내", company: "국민은행",                           courses: ["글로벌금융시장", "기업재무전략론", "핀테크와행동재무"] },
+  { name: "김대열",  location: "국내", company: "포스코인터내셔널",                   courses: ["경영전략론", "일과조직의관리와혁신", "창업실무론"] },
+  { name: "김덕현",  location: "국내", company: "㈜스페이스애드",                     courses: ["글로벌ESG론", "마케팅조사론", "유통관리론"] },
+  { name: "김동훈",  location: "국내", company: "일진글로벌홀딩스",                   courses: ["금융시장과금융기관의변화", "인적자원전략론", "일과조직의관리와혁신"] },
+  { name: "김민석",  location: "국내", company: "㈜그라비티",                         courses: ["글로벌금융시장", "기업재무전략론", "핀테크와행동재무"] },
+  { name: "김성원",  location: "국내", company: "㈜올라운드컴퍼니즈",                 courses: ["금융시장과금융기관의변화", "마케팅믹스론", "재무제표분석론"] },
+  { name: "김수현",  location: "국내", company: "중앙신협",                           courses: ["기업재무전략론", "재무제표분석론", "핀테크와행동재무"] },
+  { name: "김승인",  location: "국내", company: "레고랜드코리아",                     courses: ["소비자경험관리", "유통관리론", "일과조직의관리와혁신"] },
+  { name: "김은정",  location: "홍콩", company: "A-One Toys Limited",               courses: ["국제경영론", "글로벌금융시장", "마케팅믹스론"] },
+  { name: "김준규",  location: "국내", company: "삼양식품㈜",                         courses: [] },
+  { name: "김준석",  location: "국내", company: "CoupangFS",                        courses: ["경영전략론", "국제경영론", "마케팅믹스론"] },
+  { name: "김준표",  location: "국내", company: "포스코인터내셔널",                   courses: ["국제경영론", "글로벌ESG론", "금융시장과금융기관의변화"] },
+  { name: "김지홍",  location: "국내", company: "현대위아",                           courses: ["글로벌ESG론", "글로벌비즈니스협상론", "증권투자의이해"] },
+  { name: "김진수",  location: "국내", company: "시흥도시공사",                       courses: ["글로벌비즈니스협상론", "마케팅조사론", "유통관리론"] },
+  { name: "김초원",  location: "국내", company: "한화솔루션 주식회사",                courses: ["마케팅믹스론", "재무제표분석론", "회계와기업경영"] },
+  { name: "김현석",  location: "국내", company: "포스코인터내셔널",                   courses: ["재무회계론", "증권투자의이해", "회계와비즈니스모델의이해"] },
+  { name: "김호중",  location: "미국", company: "주식회사 진이어스",                  courses: ["글로벌금융시장", "기업재무전략론", "증권투자의이해", "회계와비즈니스모델의이해"] },
+  { name: "노새암",  location: "국내", company: "주식회사 로웨인",                    courses: ["글로벌ESG론", "유통관리론", "재무제표분석론"] },
+  { name: "문재웅",  location: "국내", company: "에드워드코리아(Atlas Copco)",        courses: ["글로벌금융시장", "마케팅믹스론", "유통관리론"] },
+  { name: "박병규",  location: "국내", company: "우리투자증권",                       courses: ["글로벌ESG론", "재무제표분석론", "조직행동론"] },
+  { name: "박상현",  location: "국내", company: "풍림무약㈜",                         courses: ["글로벌금융시장", "유통관리론", "핀테크와행동재무"] },
+  { name: "박선용",  location: "국내", company: "㈜에스씨케이컴퍼니",                 courses: ["글로벌비즈니스협상론", "재무제표분석론", "핀테크와행동재무"] },
+  { name: "박재완",  location: "국내", company: "두산건설(주)",                       courses: ["마케팅믹스론", "유통관리론", "최신정보시스템사례와전략"] },
+  { name: "박정호",  location: "태국", company: "엘브이엠씨홀딩스",                   courses: ["금융시장과금융기관의변화", "재무회계론", "핀테크와행동재무"] },
+  { name: "박준녕",  location: "국내", company: "GS리테일",                          courses: ["글로벌ESG론", "마케팅조사론", "유통관리론"] },
+  { name: "박충혁",  location: "국내", company: "DB증권",                            courses: ["기업재무전략론", "마케팅관리론(1분반)", "빅데이터분석론", "유통관리론"] },
+  { name: "박태현",  location: "국내", company: "한국어촌어항공단",                   courses: ["국제경영론", "유통관리론", "핀테크와행동재무"] },
+  { name: "박현진",  location: "국내", company: "웅진씽크빅",                         courses: ["기업재무전략론", "마케팅관리론(1분반)", "핀테크와행동재무", "회계와비즈니스모델의이해"] },
+  { name: "배선유",  location: "국내", company: "이알플러스",                         courses: ["경영전략론", "국제경영론", "글로벌비즈니스협상론"] },
+  { name: "성원",    location: "국내", company: "스타빌루스",                         courses: ["국제경영론", "재무회계론", "회계와비즈니스모델의이해"] },
+  { name: "설윤호",  location: "국내", company: "㈜쿠팡",                             courses: ["마케팅조사론", "유통관리론", "핀테크와행동재무"] },
+  { name: "손여울",  location: "베트남", company: "KOTITI시험연구원 베트남 법인",     courses: ["국제경영론", "글로벌ESG론", "글로벌금융시장"] },
+  { name: "손일권",  location: "국내", company: "포스코인터내셔널",                   courses: ["글로벌ESG론", "마케팅조사론", "회계와비즈니스모델의이해"] },
+  { name: "신은옥",  location: "국내", company: "젠엑시스㈜",                         courses: ["경영전략론", "국제경영론", "글로벌비즈니스협상론"] },
+  { name: "신윤경",  location: "국내", company: "동아약국",                           courses: ["경영자를위한데이터분석및통계적사고", "마케팅믹스론", "증권투자의이해"] },
+  { name: "신지윤",  location: "국내", company: "대상주식회사",                       courses: ["경영전략론", "인적자원전략론", "회계와기업경영"] },
+  { name: "안준영",  location: "국내", company: "24 리본동물의료센터",                courses: ["글로벌금융시장", "글로벌비즈니스협상론", "마케팅믹스론", "증권투자의이해"] },
+  { name: "안준형",  location: "국내", company: "㈜디윅스",                           courses: ["국제경영론", "글로벌ESG론", "글로벌금융시장"] },
+  { name: "오경수",  location: "국내", company: "㈜이마트",                           courses: ["국제경영론", "유통관리론", "핀테크와행동재무"] },
+  { name: "우인식",  location: "국내", company: "KGC한국인삼공사",                    courses: ["금융시장과금융기관의변화", "마케팅믹스론", "재무제표분석론"] },
+  { name: "우정환",  location: "국내", company: "하이트진로㈜",                       courses: ["국제경영론", "마케팅믹스론", "유통관리론"] },
+  { name: "유봉호",  location: "국내", company: "다이아몬드컨트리클럽",               courses: ["글로벌금융시장", "마케팅믹스론", "인적자원전략론", "증권투자의이해"] },
+  { name: "유지호",  location: "국내", company: "㈜포스코인터내셔널",                 courses: ["글로벌ESG론", "마케팅조사론", "회계와비즈니스모델의이해"] },
+  { name: "윤미래",  location: "국내", company: "맥케인",                             courses: ["마케팅믹스론", "마케팅조사론", "유통관리론", "창업실무론"] },
+  { name: "윤옥",    location: "국내", company: "허드슨첨단소재 주식회사",             courses: ["유통관리론", "재무제표분석론", "핀테크와행동재무"] },
+  { name: "윤용상",  location: "국내", company: "㈜에스비티엘첨단소재",               courses: ["재무제표분석론", "증권투자의이해", "창업실무론"] },
+  { name: "윤정호",  location: "중국", company: "선옌디자인(북경선옌건설공정유한회사)", courses: ["국제경영론", "글로벌ESG론", "글로벌금융시장"] },
+  { name: "윤지목",  location: "국내", company: "SK바이오팜",                         courses: ["재무회계론", "핀테크와행동재무", "회계와비즈니스모델의이해"] },
+  { name: "이규영",  location: "국내", company: "GE HealthCare / APAC",             courses: ["경영전략론", "금융시장과금융기관의변화", "빅데이터분석론"] },
+  { name: "이민재",  location: "국내", company: "가톨릭출판사",                       courses: ["마케팅조사론", "유통관리론", "핀테크와행동재무"] },
+  { name: "이상용",  location: "국내", company: "메리츠증권",                         courses: ["마케팅믹스론", "유통관리론", "재무제표분석론"] },
+  { name: "이성우",  location: "국내", company: "삼성전자",                           courses: ["국제경영론", "글로벌ESG론", "글로벌금융시장"] },
+  { name: "이승규",  location: "국내", company: "삼성전자주식회사",                   courses: ["경영전략론", "국제경영론", "회계와기업경영"] },
+  { name: "이웅호",  location: "국내", company: "HLB생명과학",                        courses: ["국제경영론", "글로벌ESG론", "글로벌금융시장"] },
+  { name: "이장우",  location: "국내", company: "포스코인터내셔널",                   courses: ["글로벌비즈니스협상론", "금융시장과금융기관의변화", "재무회계론"] },
+  { name: "이재웅",  location: "국내", company: "신한은행",                           courses: ["국제경영론", "글로벌금융시장", "금융시장과금융기관의변화"] },
+  { name: "이준선",  location: "국내", company: "(사)대한전기협회",                   courses: ["마케팅믹스론", "재무회계론", "회계와비즈니스모델의이해"] },
+  { name: "이지훈",  location: "국내", company: "LX판토스",                          courses: ["글로벌ESG론", "마케팅조사론", "증권투자의이해"] },
+  { name: "이진훈",  location: "국내", company: "㈜신세계 I&C",                      courses: ["국제경영론", "글로벌금융시장", "기업재무전략론"] },
+  { name: "이태윤",  location: "국내", company: "㈜포스코인터내셔널",                 courses: ["국제경영론", "글로벌ESG론", "재무회계론"] },
+  { name: "이현영",  location: "국내", company: "(사)한국ESG경영개발원",              courses: ["경영전략론", "국제경영론", "창업실무론"] },
+  { name: "이화수",  location: "국내", company: "삼성전자",                           courses: ["소비자경험관리", "소비자행동론", "재무회계론"] },
+  { name: "임도헌",  location: "국내", company: "채널A",                             courses: ["금융시장과금융기관의변화", "마케팅믹스론", "인적자원전략론"] },
+  { name: "장연주",  location: "국내", company: "㈜풀무원",                           courses: ["국제경영론", "인적자원전략론", "회계와기업경영"] },
+  { name: "정동원",  location: "국내", company: "홈앤쇼핑",                           courses: ["재무제표분석론", "증권투자의이해", "핀테크와행동재무"] },
+  { name: "정명환",  location: "국내", company: "㈜바이오노트",                       courses: ["글로벌ESG론", "인적자원전략론", "재무회계론"] },
+  { name: "정수정",  location: "국내", company: "신원",                               courses: ["경영자를위한데이터분석및통계적사고", "국제경영론", "기업재무전략론"] },
+  { name: "정윤철",  location: "국내", company: "㈜신세계 I&C",                      courses: ["마케팅조사론", "유통관리론", "핀테크와행동재무"] },
+  { name: "조근행",  location: "국내", company: "COUPANG",                          courses: ["국제경영론", "금융시장과금융기관의변화", "창업실무론"] },
+  { name: "조승희",  location: "국내", company: "삼성바이오로직스",                   courses: ["마케팅조사론", "유통관리론", "핀테크와행동재무"] },
+  { name: "조웅기",  location: "국내", company: "유니버설 뮤직 코리아",               courses: ["국제경영론", "금융시장과금융기관의변화", "마케팅믹스론"] },
+  { name: "주성배",  location: "국내", company: "삼성전자",                           courses: ["글로벌ESG론", "글로벌금융시장", "금융시장과금융기관의변화"] },
+  { name: "주현정",  location: "국내", company: "㈜위대한상상",                       courses: ["마케팅믹스론", "재무회계론", "회계와비즈니스모델의이해"] },
+  { name: "지승열",  location: "국내", company: "차봇모빌리티㈜",                     courses: ["글로벌비즈니스협상론", "유통관리론", "핀테크와행동재무"] },
+  { name: "천우성",  location: "국내", company: "삼성전자 MX 사업부",                courses: ["글로벌금융시장", "글로벌비즈니스협상론", "증권투자의이해"] },
+  { name: "최승규",  location: "국내", company: "HS효성인포메이션시스템",             courses: ["글로벌ESG론", "글로벌금융시장", "증권투자의이해"] },
+  { name: "최승수",  location: "국내", company: "삼성물산 상사부문",                  courses: ["빅데이터분석론", "증권투자의이해", "회계와비즈니스모델의이해"] },
+  { name: "최영렬",  location: "국내", company: "엘앤에프",                           courses: ["마케팅조사론", "최신정보시스템사례와전략", "핀테크와행동재무", "회계와비즈니스모델의이해"] },
+  { name: "최정욱",  location: "국내", company: "iM뱅크",                            courses: ["국제경영론", "마케팅믹스론", "회계와기업경영"] },
+  { name: "최홍석",  location: "국내", company: "㈜에스투더블유",                     courses: ["재무제표분석론", "증권투자의이해", "핀테크와행동재무"] },
+  { name: "한보미",  location: "국내", company: "9988병원",                          courses: ["국제경영론", "금융시장과금융기관의변화", "마케팅믹스론"] },
+  { name: "한창훈",  location: "국내", company: "㈜포스코인터내셔널",                 courses: ["국제경영론", "글로벌ESG론", "마케팅조사론"] },
+  { name: "허문수",  location: "중국", company: "SK hynix 반도체",                   courses: ["글로벌금융시장", "빅데이터분석론", "유통관리론"] },
+  { name: "허석",    location: "이탈리아 / 밀라노", company: "㈜바람인터내셔날",      courses: ["마케팅믹스론", "재무회계론", "최신정보시스템사례와전략"] },
+  { name: "허영준",  location: "국내", company: "㈜실리콘마이터스",                   courses: ["글로벌금융시장", "유통관리론", "핀테크와행동재무"] },
+  { name: "현용범",  location: "국내", company: "풍림무약주식회사",                   courses: ["유통관리론", "재무제표분석론", "증권투자의이해"] },
+  { name: "홍성민",  location: "국내", company: "㈜이녹스첨단소재",                   courses: ["마케팅조사론", "핀테크와행동재무", "회계와비즈니스모델의이해"] },
+  { name: "황진엽",  location: "국내", company: "라메르유한회사",                     courses: ["국제경영론", "글로벌ESG론", "마케팅조사론", "빅데이터분석론"] },
+];
+
+// 여름집중학기 원우 수강 명단 (수강내역 명단 반영, 각 원우 1과목 수강)
+// location/company 는 1학기 명단과 동일 인물 기준
+const SUMMER_STUDENTS = [
+  { name: "강병희", location: "국내", company: "GS리테일", courses: ["(여름)해외글로벌세미나"] },
+  { name: "고세진", location: "베트남", company: "서흥베트남", courses: ["(여름)마케팅조사론"] },
+  { name: "공부석", location: "국내", company: "현대모비스", courses: ["(여름)마케팅조사론"] },
+  { name: "김광식", location: "베트남", company: "EDK VINA CO., LTD.", courses: ["(여름)마케팅조사론"] },
+  { name: "김나영", location: "국내", company: "주식회사 당근마켓", courses: ["(여름)경영전략론"] },
+  { name: "김대억", location: "국내", company: "국민은행", courses: ["(여름)증권투자의이해"] },
+  { name: "김대열", location: "국내", company: "포스코인터내셔널", courses: ["(여름)증권투자의이해"] },
+  { name: "김덕현", location: "국내", company: "㈜스페이스애드", courses: ["(여름)금융시장과금융기관의변화"] },
+  { name: "김동훈", location: "국내", company: "일진글로벌홀딩스", courses: ["(여름)마케팅믹스론"] },
+  { name: "김민석", location: "국내", company: "㈜그라비티", courses: ["(여름)증권투자의이해"] },
+  { name: "김성원", location: "국내", company: "㈜올라운드컴퍼니즈", courses: ["(여름)마케팅조사론"] },
+  { name: "김수현", location: "국내", company: "중앙신협", courses: ["(여름)증권투자의이해"] },
+  { name: "김승인", location: "국내", company: "레고랜드코리아", courses: ["(여름)마케팅믹스론"] },
+  { name: "김은정", location: "홍콩", company: "A-One Toys Limited", courses: ["(여름)해외글로벌세미나"] },
+  { name: "김준석", location: "국내", company: "CoupangFS", courses: ["(여름)증권투자의이해"] },
+  { name: "김준표", location: "국내", company: "포스코인터내셔널", courses: ["(여름)해외글로벌세미나"] },
+  { name: "김지홍", location: "국내", company: "현대위아", courses: ["(여름)회계와기업경영"] },
+  { name: "김진수", location: "국내", company: "시흥도시공사", courses: ["(여름)금융시장과금융기관의변화"] },
+  { name: "김초원", location: "국내", company: "한화솔루션 주식회사", courses: ["(여름)금융시장과금융기관의변화"] },
+  { name: "김현석", location: "국내", company: "포스코인터내셔널", courses: ["(여름)기업재무전략론"] },
+  { name: "김호중", location: "미국", company: "주식회사 진이어스", courses: ["(여름)마케팅조사론"] },
+  { name: "노새암", location: "국내", company: "주식회사 로웨인", courses: ["(여름)해외글로벌세미나"] },
+  { name: "문재웅", location: "국내", company: "에드워드코리아(Atlas Copco)", courses: ["(여름)경영전략론"] },
+  { name: "박병규", location: "국내", company: "우리투자증권", courses: ["(여름)금융시장과금융기관의변화"] },
+  { name: "박상현", location: "국내", company: "풍림무약㈜", courses: ["(여름)금융시장과금융기관의변화"] },
+  { name: "박선용", location: "국내", company: "㈜에스씨케이컴퍼니", courses: ["(여름)해외글로벌세미나"] },
+  { name: "박재완", location: "국내", company: "두산건설(주)", courses: ["(여름)증권투자의이해"] },
+  { name: "박정호", location: "태국", company: "엘브이엠씨홀딩스", courses: ["(여름)기업재무전략론"] },
+  { name: "박준녕", location: "국내", company: "GS리테일", courses: ["(여름)금융시장과금융기관의변화"] },
+  { name: "박충혁", location: "국내", company: "DB증권", courses: ["(여름)금융시장과금융기관의변화"] },
+  { name: "박태현", location: "국내", company: "한국어촌어항공단", courses: ["(여름)마케팅믹스론"] },
+  { name: "박현진", location: "국내", company: "웅진씽크빅", courses: ["(여름)마케팅조사론"] },
+  { name: "배선유", location: "국내", company: "이알플러스", courses: ["(여름)기업재무전략론"] },
+  { name: "설윤호", location: "국내", company: "㈜쿠팡", courses: ["(여름)금융시장과금융기관의변화"] },
+  { name: "성원", location: "국내", company: "스타빌루스", courses: ["(여름)마케팅믹스론"] },
+  { name: "손여울", location: "베트남", company: "KOTITI시험연구원 베트남 법인", courses: ["(여름)해외글로벌세미나"] },
+  { name: "손일권", location: "국내", company: "포스코인터내셔널", courses: ["(여름)회계와기업경영"] },
+  { name: "신윤경", location: "국내", company: "동아약국", courses: ["(여름)기업재무전략론"] },
+  { name: "신은옥", location: "국내", company: "젠엑시스㈜", courses: ["(여름)기업재무전략론"] },
+  { name: "신지윤", location: "국내", company: "대상주식회사", courses: ["(여름)증권투자의이해"] },
+  { name: "안준형", location: "국내", company: "㈜디윅스", courses: ["(여름)해외글로벌세미나"] },
+  { name: "오경수", location: "국내", company: "㈜이마트", courses: ["(여름)해외글로벌세미나"] },
+  { name: "우인식", location: "국내", company: "KGC한국인삼공사", courses: ["(여름)마케팅조사론"] },
+  { name: "우정환", location: "국내", company: "하이트진로㈜", courses: ["(여름)금융시장과금융기관의변화"] },
+  { name: "유지호", location: "국내", company: "㈜포스코인터내셔널", courses: ["(여름)경영전략론"] },
+  { name: "윤미래", location: "국내", company: "맥케인", courses: ["(여름)해외글로벌세미나"] },
+  { name: "윤옥", location: "국내", company: "허드슨첨단소재 주식회사", courses: ["(여름)마케팅믹스론"] },
+  { name: "윤용상", location: "국내", company: "㈜에스비티엘첨단소재", courses: ["(여름)기업재무전략론"] },
+  { name: "윤정호", location: "중국", company: "선옌디자인(북경선옌건설공정유한회사)", courses: ["(여름)해외글로벌세미나"] },
+  { name: "윤지목", location: "국내", company: "SK바이오팜", courses: ["(여름)경영전략론"] },
+  { name: "이규영", location: "국내", company: "GE HealthCare / APAC", courses: ["(여름)마케팅믹스론"] },
+  { name: "이민재", location: "국내", company: "가톨릭출판사", courses: ["(여름)금융시장과금융기관의변화"] },
+  { name: "이상용", location: "국내", company: "메리츠증권", courses: ["(여름)해외글로벌세미나"] },
+  { name: "이성우", location: "국내", company: "삼성전자", courses: ["(여름)해외글로벌세미나"] },
+  { name: "이승규", location: "국내", company: "삼성전자주식회사", courses: ["(여름)마케팅믹스론"] },
+  { name: "이웅호", location: "국내", company: "HLB생명과학", courses: ["(여름)해외글로벌세미나"] },
+  { name: "이장우", location: "국내", company: "포스코인터내셔널", courses: ["(여름)해외글로벌세미나"] },
+  { name: "이재웅", location: "국내", company: "신한은행", courses: ["(여름)증권투자의이해"] },
+  { name: "이준선", location: "국내", company: "(사)대한전기협회", courses: ["(여름)마케팅조사론"] },
+  { name: "이지훈", location: "국내", company: "LX판토스", courses: ["(여름)기업재무전략론"] },
+  { name: "이진훈", location: "국내", company: "㈜신세계 I&C", courses: ["(여름)마케팅조사론"] },
+  { name: "이태윤", location: "국내", company: "㈜포스코인터내셔널", courses: ["(여름)해외글로벌세미나"] },
+  { name: "이현영", location: "국내", company: "(사)한국ESG경영개발원", courses: ["(여름)금융시장과금융기관의변화"] },
+  { name: "이화수", location: "국내", company: "삼성전자", courses: ["(여름)마케팅조사론"] },
+  { name: "임도헌", location: "국내", company: "채널A", courses: ["(여름)증권투자의이해"] },
+  { name: "장연주", location: "국내", company: "㈜풀무원", courses: ["(여름)해외글로벌세미나"] },
+  { name: "정동원", location: "국내", company: "홈앤쇼핑", courses: ["(여름)기업재무전략론"] },
+  { name: "정수정", location: "국내", company: "신원", courses: ["(여름)해외글로벌세미나"] },
+  { name: "정윤철", location: "국내", company: "㈜신세계 I&C", courses: ["(여름)증권투자의이해"] },
+  { name: "조근행", location: "국내", company: "COUPANG", courses: ["(여름)증권투자의이해"] },
+  { name: "조승희", location: "국내", company: "삼성바이오로직스", courses: ["(여름)증권투자의이해"] },
+  { name: "조웅기", location: "국내", company: "유니버설 뮤직 코리아", courses: ["(여름)마케팅조사론"] },
+  { name: "주성배", location: "국내", company: "삼성전자", courses: ["(여름)증권투자의이해"] },
+  { name: "주현정", location: "국내", company: "㈜위대한상상", courses: ["(여름)마케팅조사론"] },
+  { name: "지승열", location: "국내", company: "차봇모빌리티㈜", courses: ["(여름)증권투자의이해"] },
+  { name: "천우성", location: "국내", company: "삼성전자 MX 사업부", courses: ["(여름)마케팅믹스론"] },
+  { name: "최승규", location: "국내", company: "HS효성인포메이션시스템", courses: ["(여름)기업재무전략론"] },
+  { name: "최승수", location: "국내", company: "삼성물산 상사부문", courses: ["(여름)마케팅믹스론"] },
+  { name: "최영렬", location: "국내", company: "엘앤에프", courses: ["(여름)마케팅믹스론"] },
+  { name: "최정욱", location: "국내", company: "iM뱅크", courses: ["(여름)금융시장과금융기관의변화"] },
+  { name: "최홍석", location: "국내", company: "㈜에스투더블유", courses: ["(여름)기업재무전략론"] },
+  { name: "한보미", location: "국내", company: "9988병원", courses: ["(여름)마케팅조사론"] },
+  { name: "한창훈", location: "국내", company: "㈜포스코인터내셔널", courses: ["(여름)경영전략론"] },
+  { name: "허문수", location: "중국", company: "SK hynix 반도체", courses: ["(여름)기업재무전략론"] },
+  { name: "허석", location: "이탈리아 / 밀라노", company: "㈜바람인터내셔날", courses: ["(여름)기업재무전략론"] },
+  { name: "허영준", location: "국내", company: "㈜실리콘마이터스", courses: ["(여름)금융시장과금융기관의변화"] },
+  { name: "현용범", location: "국내", company: "풍림무약주식회사", courses: ["(여름)마케팅조사론"] },
+  { name: "홍성민", location: "국내", company: "㈜이녹스첨단소재", courses: ["(여름)경영전략론"] },
+  { name: "황진엽", location: "국내", company: "라메르유한회사", courses: ["(여름)해외글로벌세미나"] },
+];
+
+// ============================================================
+// 학기 전환 — 활성 데이터셋
+//   app.js 전반은 아래 활성 바인딩(COURSES/SCHEDULE_DATA/QNA_SCHEDULE/STUDENTS)을 참조한다.
+//   상단 토글에서 applySemester('spring'|'summer') 호출 시 통째로 교체되어 학기 데이터가 섞이지 않는다.
+// ============================================================
+let SEMESTER      = 'spring';        // 'spring' | 'summer'
+let COURSES       = SPRING_COURSES;
+let SCHEDULE_DATA = SPRING_SCHEDULE;
+let QNA_SCHEDULE  = SPRING_QNA;
+let STUDENTS      = SPRING_STUDENTS;
+
+function applySemester(sem) {
+  SEMESTER = (sem === 'summer') ? 'summer' : 'spring';
+  if (SEMESTER === 'summer') {
+    COURSES       = SUMMER_COURSES;
+    SCHEDULE_DATA = SUMMER_OFFLINE;   // 토요일 오프라인 + 해외글로벌세미나 + 중간/기말고사
+    QNA_SCHEDULE  = SUMMER_QNA;
+    STUDENTS      = SUMMER_STUDENTS;
+  } else {
+    COURSES       = SPRING_COURSES;
+    SCHEDULE_DATA = SPRING_SCHEDULE;
+    QNA_SCHEDULE  = SPRING_QNA;
+    STUDENTS      = SPRING_STUDENTS;
+  }
+  return SEMESTER;
+}
+
+// ============================================================
+// 유틸리티 함수
+// ============================================================
+function getAllDates() {
+  return [...new Set(SCHEDULE_DATA.map(s => s.date))].sort();
+}
+function getDatesByMonth() {
+  const dates = getAllDates();
+  const grouped = {};
+  dates.forEach(d => {
+    const month = d.substring(0, 7);
+    if (!grouped[month]) grouped[month] = [];
+    grouped[month].push(d);
+  });
+  return grouped;
+}

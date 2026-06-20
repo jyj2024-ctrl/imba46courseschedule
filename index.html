@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SKKU IMBA 46기 | 2026년 여름집중학기 수업 시간표</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css?v=20260620e" />
+  <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+
+<!-- ========== HEADER ========== -->
+<header class="site-header">
+  <div class="header-inner">
+    <a class="header-logo" href="#" onclick="goHome(); return false;" title="처음 화면으로">
+      <div class="logo-badge">IMBA</div>
+      <div class="header-titles">
+        <h1>성균관대 IMBA 46기</h1>
+        <p>2026년 여름집중학기 수업 시간표</p>
+      </div>
+    </a>
+    <div class="header-meta">
+      <span class="badge-semester">2026학년도 여름집중학기</span>
+
+      <!-- 로그인 전: 구글 로그인 버튼 -->
+      <button id="loginBtn" class="auth-login-btn" onclick="window.fbSignIn()">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" class="auth-google-icon">
+        로그인
+      </button>
+
+      <!-- 로그인 후: 유저 프로필 -->
+      <div id="userProfile" class="auth-user-profile" style="display:none">
+        <img id="userAvatar" class="auth-avatar" src="" alt="프로필">
+        <div class="auth-user-info">
+          <span id="userName" class="auth-user-name"></span>
+          <button class="auth-logout-btn" onclick="window.fbSignOut()">로그아웃</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ========== 학기 선택 ========== -->
+<div class="semester-bar">
+  <div class="semester-bar-inner">
+    <span class="semester-bar-label"><i class="fas fa-graduation-cap"></i> 학기 선택</span>
+    <div class="semester-toggle" role="tablist" aria-label="학기 선택">
+      <button class="semester-btn" data-sem="spring" onclick="switchSemester('spring')">2026 1학기</button>
+      <button class="semester-btn active" data-sem="summer" onclick="switchSemester('summer')">2026 여름집중학기</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== MAIN TABS ========== -->
+<div class="tab-nav">
+  <div class="tab-nav-inner">
+    <button class="tab-btn active" data-tab="search">
+      <i class="fas fa-search"></i> 원우 시간표 검색
+    </button>
+    <button class="tab-btn" data-tab="timetable">
+      <i class="fas fa-table"></i> 전체 시간표
+    </button>
+    <button class="tab-btn" data-tab="calendar">
+      <i class="fas fa-calendar-alt"></i> 캘린더 뷰
+    </button>
+    <button class="tab-btn" data-tab="courses">
+      <i class="fas fa-book"></i> 과목별 조회
+    </button>
+    <button class="tab-btn" data-tab="datequery">
+      <i class="fas fa-user-clock"></i> 날짜별 조회
+    </button>
+    <button class="tab-btn" data-tab="stats">
+      <i class="fas fa-chart-bar"></i> 과목 통계
+    </button>
+    <a class="tab-btn tab-btn-link" href="https://imba.ac.kr/" target="_blank" rel="noopener noreferrer">
+      <i class="fas fa-external-link-alt"></i> 홈페이지 바로가기
+    </a>
+  </div>
+</div>
+
+<!-- ========== CONTENT ========== -->
+<main class="main-content">
+
+  <!-- ===== TAB 6: 날짜별 조회 ===== -->
+  <section class="tab-panel" id="tab-datequery">
+    <div class="panel-header">
+      <h2><i class="fas fa-user-clock"></i> 날짜별 조회</h2>
+      <p>날짜와 시간대를 선택하면 해당 수업의 수강 원우를 확인할 수 있습니다</p>
+    </div>
+
+    <!-- 날짜 + 시간 선택 영역 -->
+    <div class="dq-selector-card">
+      <div class="dq-selector-row">
+        <!-- 날짜 선택 -->
+        <div class="dq-field">
+          <label class="dq-label"><i class="fas fa-calendar-day"></i> 날짜 선택</label>
+          <input type="date" id="dqDateInput" class="dq-date-input"
+            min="2026-03-01" max="2026-06-30" />
+        </div>
+        <!-- 시간대 선택 -->
+        <div class="dq-field">
+          <label class="dq-label">
+            <i class="fas fa-clock"></i> 시간대 선택
+            <span class="dq-multi-hint"><i class="fas fa-layer-group"></i> 여러 시간대 동시 선택 가능</span>
+          </label>
+          <div id="dqTimeslots" class="dq-timeslots">
+            <span class="dq-timeslot-hint">먼저 날짜를 선택하세요</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 결과 영역 -->
+    <div id="dqResult" class="dq-result" style="display:none">
+      <div class="dq-result-header">
+        <div class="dq-result-title" id="dqResultTitle"></div>
+        <div class="dq-result-right">
+          <div class="dq-result-meta" id="dqResultMeta"></div>
+          <button class="dq-excel-btn" onclick="exportDqToExcel()">
+            <i class="fas fa-file-excel"></i> 엑셀 다운로드
+          </button>
+        </div>
+      </div>
+      <!-- 과목별 카드 -->
+      <div id="dqCourseList" class="dq-course-list"></div>
+      <!-- 전체 원우 요약 -->
+      <div class="dq-summary-wrap">
+        <div class="dq-summary-title"><i class="fas fa-users"></i> 수업 있는 원우 전체 목록</div>
+        <div id="dqStudentSummary" class="dq-student-summary"></div>
+      </div>
+    </div>
+
+    <!-- 빈 상태 -->
+    <div id="dqEmpty" class="dq-empty">
+      <i class="fas fa-calendar-search"></i>
+      <p>날짜와 시간대를 선택하면<br>수업 있는 원우 목록이 표시됩니다</p>
+    </div>
+  </section>
+
+  <!-- ===== TAB 1: 원우 검색 ===== -->
+  <section class="tab-panel active" id="tab-search">
+
+    <!-- 안내 문구 -->
+    <div class="search-guide-banner">
+      <i class="fas fa-info-circle"></i>
+      원우별 또는 그룹별(여러 명 동시 선택 및 저장 가능) 수업 스케줄을 확인하세요.
+    </div>
+
+    <!-- 좌우 2분할 본문 -->
+    <div class="split-layout">
+
+      <!-- ▌좌측: 원우 목록 -->
+      <div class="split-left" id="splitLeft">
+        <div class="split-left-header">
+          <span class="list-title">
+            <i class="fas fa-users"></i> 원우 목록
+          </span>
+          <span id="totalCount" class="count-badge"></span>
+        </div>
+        <div class="split-left-subheader" id="splitLeftSubheader" style="display:none">
+          <span id="selectedCountLabel" class="selected-count-label"></span>
+          <button id="clearAllStudents" class="link-btn">
+            <i class="fas fa-rotate-left"></i> 전체보기
+          </button>
+        </div>
+        <!-- 원우 목록 내 검색창 -->
+        <div class="left-search-wrap" id="leftSearchWrap">
+          <i class="fas fa-search left-search-icon"></i>
+          <input type="text" id="studentSearch" placeholder="이름 검색..." autocomplete="off" />
+          <button id="clearSearch" class="left-clear-btn" style="display:none"><i class="fas fa-times"></i></button>
+          <div id="searchDropdown" class="left-search-dropdown" style="display:none"></div>
+        </div>
+        <div id="studentList" class="student-list"></div>
+
+        <!-- 그룹 저장 섹션 -->
+        <div class="group-section" id="groupSection">
+          <div class="group-section-header">
+            <span class="group-section-title"><i class="fas fa-layer-group"></i> 저장된 그룹</span>
+            <button class="group-save-btn" id="groupSaveBtn" onclick="openGroupSaveModal()" title="현재 선택 원우를 그룹으로 저장">
+              <i class="fas fa-plus"></i> 그룹 저장
+            </button>
+          </div>
+          <div id="groupList" class="group-list"></div>
+        </div>
+      </div>
+
+
+      <!-- ========== 그룹 저장 모달 ========== -->
+      <div id="groupModal" class="group-modal-overlay" style="display:none" onclick="closeGroupModal(event)">
+        <div class="group-modal">
+          <div class="group-modal-header">
+            <span id="groupModalTitle"><i class="fas fa-layer-group"></i> 그룹 저장</span>
+            <button class="group-modal-close" onclick="closeGroupModal()"><i class="fas fa-times"></i></button>
+          </div>
+          <div class="group-modal-body">
+            <label class="gm-label">그룹명</label>
+            <input type="text" id="groupNameInput" class="gm-input" placeholder="예: 마케팅팀, 재무그룹..." maxlength="20" />
+            <div class="gm-members-title">선택된 원우 <span id="gm-count"></span></div>
+            <div id="gmMemberList" class="gm-member-list"></div>
+          </div>
+          <div class="group-modal-footer">
+            <button class="gm-cancel-btn" onclick="closeGroupModal()">취소</button>
+            <button class="gm-save-btn" id="gmSaveBtn" onclick="saveGroupConfirm()"><i class="fas fa-save"></i> 저장</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ▌우측: 시간표 -->
+      <div class="split-right" id="splitRight">
+
+        <!-- 선택 전 안내 -->
+        <div class="split-right-empty" id="splitEmpty">
+          <i class="fas fa-hand-pointer"></i>
+          <p>왼쪽에서 원우를 선택하면<br>시간표가 표시됩니다</p>
+        </div>
+
+        <!-- 선택 후 결과 영역 -->
+        <div id="scheduleResult" class="schedule-result" style="display:none">
+
+          <!-- 이름 + 수업 타입 필터 -->
+          <div class="sr-header">
+            <h3 id="resultTitle"><i class="fas fa-user"></i> </h3>
+            <div class="sr-header-right">
+              <div class="type-filter sr-type-filter">
+                <button class="filter-btn active" data-filter="all">전체</button>
+                <button class="filter-btn" data-filter="offline"><i class="fas fa-building"></i> 오프라인</button>
+                <button class="filter-btn" data-filter="qna"><i class="fas fa-video"></i> 화상Q&A</button>
+              </div>
+              <button class="excel-download-btn" id="excelDownloadBtn" onclick="exportScheduleToExcel()">
+                <i class="fas fa-file-excel"></i> 엑셀 다운로드
+              </button>
+            </div>
+          </div>
+
+          <!-- 뷰 모드 탭: 전체 수업 목록 / 캘린더 -->
+          <div class="view-mode-tabs">
+            <button class="view-mode-tab active" data-mode="list">
+              <i class="fas fa-list-ul"></i> 전체 수업 목록
+            </button>
+            <button class="view-mode-tab" data-mode="calendar">
+              <i class="fas fa-calendar-alt"></i> 캘린더
+            </button>
+          </div>
+
+          <!-- 캘린더 하위 옵션 제거 (날짜별 뷰만 사용) -->
+
+          <!-- 날짜별 캘린더 상세 패널 (날짜 클릭 시 캘린더 위에 표시) -->
+          <div id="calDayDetailPanel" class="cal-day-detail-panel" style="display:none"></div>
+
+          <!-- 컨텐츠 영역 -->
+          <div id="scheduleContent"></div>
+        </div>
+      </div>
+
+    </div><!-- /split-layout -->
+  </section>
+
+  <!-- ===== TAB 2: 전체 시간표 ===== -->
+  <section class="tab-panel" id="tab-timetable">
+    <div class="panel-header">
+      <h2><i class="fas fa-table"></i> 전체 수업 시간표</h2>
+      <p>날짜별 오프라인, 화상Q&A 수업 스케쥴을 확인하세요</p>
+    </div>
+
+    <div class="timetable-controls">
+      <div class="month-tabs" id="monthTabs"></div>
+      <div class="type-filter">
+        <button class="filter-btn active" data-filter="all" id="tt-filter-all">전체</button>
+        <button class="filter-btn" data-filter="offline" id="tt-filter-offline"><i class="fas fa-building"></i> 오프라인</button>
+        <button class="filter-btn" data-filter="qna" id="tt-filter-qna"><i class="fas fa-video"></i> 화상Q&A</button>
+      </div>
+    </div>
+
+    <div id="timetableContent" class="timetable-content"></div>
+  </section>
+
+  <!-- ===== TAB 3: 캘린더 뷰 ===== -->
+  <section class="tab-panel" id="tab-calendar">
+    <div class="panel-header">
+      <h2><i class="fas fa-calendar-alt"></i> 캘린더 뷰</h2>
+      <p>월별 캘린더에서 수업 일정을 확인하세요</p>
+    </div>
+
+    <div class="calendar-controls">
+      <div class="calendar-nav">
+        <button id="calPrev" class="cal-nav-btn"><i class="fas fa-chevron-left"></i></button>
+        <h3 id="calTitle">2026년 3월</h3>
+        <button id="calNext" class="cal-nav-btn"><i class="fas fa-chevron-right"></i></button>
+      </div>
+      <div class="cal-student-select-wrap">
+        <div class="cal-search-input-wrap">
+          <i class="fas fa-search"></i>
+          <input type="text" id="calStudentSearch" placeholder="원우 이름으로 필터..." />
+        </div>
+        <div id="calDropdown" class="search-dropdown" style="display:none"></div>
+        <div id="calSelectedChips" class="chips-container" style="margin-top:8px"></div>
+      </div>
+      <div class="type-filter">
+        <button class="filter-btn active" data-filter="all" id="cal-filter-all">전체</button>
+        <button class="filter-btn" data-filter="offline" id="cal-filter-offline"><i class="fas fa-building"></i> 오프라인</button>
+        <button class="filter-btn" data-filter="qna" id="cal-filter-qna"><i class="fas fa-video"></i> 화상Q&A</button>
+      </div>
+    </div>
+
+    <div id="calendarGrid" class="calendar-grid"></div>
+
+    <!-- 날짜 클릭시 상세 -->
+    <div id="dayDetail" class="day-detail" style="display:none">
+      <div class="day-detail-header">
+        <h4 id="dayDetailTitle"></h4>
+        <button id="closeDayDetail" class="close-btn"><i class="fas fa-times"></i></button>
+      </div>
+      <div id="dayDetailContent"></div>
+    </div>
+  </section>
+
+  <!-- ===== TAB 4: 과목별 조회 ===== -->
+  <section class="tab-panel" id="tab-courses">
+    <div class="panel-header">
+      <h2><i class="fas fa-book"></i> 과목별 조회</h2>
+      <p>과목을 선택하여 수강 원우와 수업 일정을 확인하세요</p>
+    </div>
+
+    <div class="course-list-grid" id="courseListGrid"></div>
+
+    <div id="courseDetail" class="course-detail" style="display:none">
+      <div class="course-detail-header">
+        <h3 id="courseDetailTitle"></h3>
+        <button id="closeCourseDetail" class="close-btn"><i class="fas fa-times"></i></button>
+      </div>
+      <div id="courseDetailContent"></div>
+    </div>
+  </section>
+
+  <!-- ===== TAB 5: 과목 통계 ===== -->
+  <section class="tab-panel" id="tab-stats">
+    <div class="panel-header">
+      <h2><i class="fas fa-chart-bar"></i> 과목 통계</h2>
+      <p>수강 인원, 분야별 분포, 과목 현황을 한눈에 확인하세요</p>
+    </div>
+
+    <!-- 핵심 통계 KPI 카드 -->
+    <div class="stats-kpi-row" id="statsKpiRow"></div>
+
+    <!-- 과목 전체 테이블 -->
+    <div class="stats-table-card">
+      <div class="stats-chart-title">
+        <i class="fas fa-table"></i> 과목별 상세 현황
+        <div class="stats-table-search-wrap">
+          <input type="text" id="statsTableSearch" placeholder="과목명 검색..." class="stats-table-search" />
+        </div>
+      </div>
+      <div class="stats-table-wrap">
+        <table class="stats-table" id="statsTable">
+          <colgroup>
+            <col style="width:32%">
+            <col style="width:28%">
+            <col class="hide-mobile" style="width:40%">
+          </colgroup>
+          <thead>
+            <tr>
+              <th class="sortable" data-col="name">과목명 <i class="fas fa-sort"></i></th>
+              <th class="sortable" data-col="students" class="sorted-desc">수강인원 <i class="fas fa-sort-down"></i></th>
+              <th class="hide-mobile">수강생</th>
+            </tr>
+          </thead>
+          <tbody id="statsTableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ========== FOOTER ========== -->
+<footer class="site-footer">
+  <p>성균관대학교 IMBA 46기 · 2026년 1학기 · 수업 시간표 안내</p>
+  <p class="footer-note">⚠️ 시간표는 변경될 수 있습니다. 정확한 일정은 학교 공지를 확인하세요.</p>
+</footer>
+
+<!-- ========== SCRIPTS ========== -->
+<script src="js/data.js?v=20260620e"></script>
+<script src="js/app.js?v=20260620e"></script>
+<script type="module" src="js/firebase.js"></script>
+<script type="module">
+  import {
+    auth, onAuthStateChanged,
+    loadGroupsFromFirestore, saveGroupsToFirestore,
+    signInWithGoogle, signOutUser
+  } from './js/firebase.js';
+
+  // 전역 함수 노출 (onclick 사용)
+  window.fbSignIn  = signInWithGoogle;
+  window.fbSignOut = signOutUser;
+
+  // Firestore 저장/불러오기 브릿지
+  window.fbLoadGroups = loadGroupsFromFirestore;
+  window.fbSaveGroups = saveGroupsToFirestore;
+
+  // 로그인 상태 감지
+  onAuthStateChanged(auth, async (user) => {
+    const loginBtn    = document.getElementById('loginBtn');
+    const userProfile = document.getElementById('userProfile');
+    const userAvatar  = document.getElementById('userAvatar');
+    const userNameEl  = document.getElementById('userName');
+
+    if (user) {
+      // 로그인 상태 UI
+      loginBtn.style.display    = 'none';
+      userProfile.style.display = 'flex';
+      userAvatar.src            = user.photoURL || '';
+      userNameEl.textContent    = user.displayName || user.email;
+
+      // Firestore에서 그룹 불러와 적용
+      const groups = await loadGroupsFromFirestore();
+      if (groups !== null) {
+        try {
+          localStorage.setItem('imba46_groups', JSON.stringify(groups));
+        } catch(e) {}
+        if (typeof window.renderGroupList === 'function') {
+          window.renderGroupList();
+        }
+      }
+    } else {
+      // 비로그인 상태 UI
+      loginBtn.style.display    = 'flex';
+      userProfile.style.display = 'none';
+    }
+  });
+</script>
+</body>
+</html>
