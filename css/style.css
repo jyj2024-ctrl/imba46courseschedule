@@ -2308,6 +2308,9 @@ button { cursor: pointer; border: none; background: none; font-family: inherit; 
   transition: border-color 0.2s;
   cursor: pointer;
   width: 100%;
+  max-width: 220px;   /* 날짜 입력칸이 너무 길어 잘리는 문제 방지 */
+  min-width: 0;       /* 좁은 화면에서 컨테이너보다 작게 줄어들 수 있도록 */
+  box-sizing: border-box;
 }
 .dq-date-input:focus { border-color: var(--primary); }
 
