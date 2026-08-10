@@ -44,13 +44,13 @@ document.addEventListener('DOMContentLoaded', () => {
   initStatsTab();
   initDateQueryTab();
 
-  // 기본 학기: 여름집중학기 (데이터/상태/라벨/토글 일괄 적용)
-  switchSemester('summer');
+  // 기본 학기: 2026 2학기 (데이터/상태/라벨/토글 일괄 적용)
+  switchSemester('fall');
 });
 
 // 로고 클릭 → 사이트 초기 화면으로 복귀 (외부 이동 없이 기본 학기 + 기본 탭)
 window.goHome = function() {
-  switchSemester('summer');                 // 기본 학기 + 상태/렌더 초기화
+  switchSemester('fall');                   // 기본 학기 + 상태/렌더 초기화
   const homeBtn = document.querySelector('.tab-btn[data-tab="timetable"]');
   if (homeBtn) homeBtn.click();              // 기본 탭(전체 시간표) 활성화
   window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -78,7 +78,7 @@ window.switchSemester = function(sem) {
   state.calFilter           = 'all';
   state.currentMode         = 'list';
   state.calendarYear        = 2026;
-  state.calendarMonth       = (applied === 'summer') ? 5 : 2;   // 여름=6월, 1학기=3월
+  state.calendarMonth       = applied === 'summer' ? 5 : applied === 'fall' ? 8 : 2;   // 여름=6월, 2학기=9월, 1학기=3월
 
   // 타입 필터 버튼 UI 초기화
   document.querySelectorAll('.type-filter .filter-btn').forEach(b =>
@@ -115,14 +115,14 @@ window.switchSemester = function(sem) {
 };
 
 function updateSemesterLabels(sem) {
-  const isSummer = sem === 'summer';
+  const nameMap  = { spring: '2026년 1학기', summer: '2026년 여름집중학기', fall: '2026년 2학기' };
+  const badgeMap = { spring: '2026학년도 1학기', summer: '2026학년도 여름집중학기', fall: '2026학년도 2학기' };
+  const label = nameMap[sem] || nameMap.fall;
   const sub   = document.querySelector('.header-titles p');
   const badge = document.querySelector('.badge-semester');
-  if (sub)   sub.textContent   = isSummer ? '2026년 여름집중학기 수업 시간표' : '2026년 1학기 수업 시간표';
-  if (badge) badge.textContent = isSummer ? '2026학년도 여름집중학기' : '2026학년도 1학기';
-  document.title = isSummer
-    ? 'SKKU IMBA 46기 | 2026년 여름집중학기 수업 시간표'
-    : 'SKKU IMBA 46기 | 2026년 1학기 수업 시간표';
+  if (sub)   sub.textContent   = `${label} 수업 시간표`;
+  if (badge) badge.textContent = badgeMap[sem] || badgeMap.fall;
+  document.title = `SKKU IMBA 46기 | ${label} 수업 시간표`;
 }
 
 // 날짜별 조회 탭을 활성 학기에 맞게 초기화 (날짜 입력 범위 + 결과 초기화)
@@ -138,9 +138,21 @@ function resetDateQueryForSemester(sem) {
   if (slots)    slots.innerHTML = '<span class="dq-timeslot-hint">먼저 날짜를 선택하세요</span>';
 
   if (input) {
-    if (sem === 'summer') { input.min = '2026-06-20'; input.max = '2026-08-10'; }
-    else                  { input.min = '2026-03-01'; input.max = '2026-06-30'; }
+    if (sem === 'summer')    { input.min = '2026-06-20'; input.max = '2026-08-10'; }
+    else if (sem === 'fall') { input.min = '2026-08-31'; input.max = '2026-12-12'; }
+    else                     { input.min = '2026-03-01'; input.max = '2026-06-30'; }
   }
+
+  // 원우 수강 명단이 없는 학기(예: 2학기)는 안내만 표시
+  if (typeof STUDENTS !== 'undefined' && STUDENTS.length === 0) {
+    if (selector) selector.style.display = 'none';
+    if (empty) {
+      empty.style.display = 'flex';
+      empty.innerHTML = '<i class="fas fa-user-clock"></i><p>원우 수강 명단은<br>준비 중입니다</p>';
+    }
+    return;
+  }
+
   if (empty) {
     empty.style.display = 'flex';
     empty.innerHTML = '<i class="fas fa-calendar-search"></i><p>날짜와 시간대를 선택하면<br>수업 있는 원우 목록이 표시됩니다</p>';
@@ -186,14 +198,19 @@ function isToday(dateStr) {
 }
 function getWeekNumber(dateStr) {
   const d = new Date(dateStr + 'T00:00:00');
+  const WEEK = 7 * 24 * 60 * 60 * 1000;
+  // 2026 2학기(8/31~)는 별도 주차 체계 (8/31 월요일 기준)
+  const fallStart = new Date('2026-08-31T00:00:00');
+  if (d >= fallStart) {
+    return Math.floor((d - fallStart) / WEEK) + 1;
+  }
   // 여름집중학기(6/24~)는 별도 주차 체계 (6/22 월요일 기준)
   const summerStart = new Date('2026-06-22T00:00:00');
   if (d >= summerStart) {
-    return Math.floor((d - summerStart) / (7 * 24 * 60 * 60 * 1000)) + 1;
+    return Math.floor((d - summerStart) / WEEK) + 1;
   }
   const startDate = new Date('2026-03-07T00:00:00');
-  const diff = Math.floor((d - startDate) / (7 * 24 * 60 * 60 * 1000));
-  return diff + 1;
+  return Math.floor((d - startDate) / WEEK) + 1;
 }
 function getMonthLabel(ym) {
   const [y, m] = ym.split('-');
@@ -1057,9 +1074,11 @@ function renderScheduleItem(item, studentNames) {
         <div class="course-name-label exam-label">
           <i class="fas fa-file-alt"></i> ${item.course} ${groupBadge}
         </div>
-        <div class="professor-label" style="color:#c0392b;opacity:0.8">
+        ${(course.professor && course.professor !== '-')
+          ? `<div class="professor-label" style="color:#c0392b;opacity:0.8">
           <i class="fas fa-user-tie"></i> ${course.professor} 교수 &nbsp;·&nbsp; ${item.date <= '2026-04-18' ? '중간고사' : '기말고사'}
-        </div>
+        </div>`
+          : ''}
         ${studentTags}
       </div>
       <span class="type-badge exam"><i class="fas fa-file-alt"></i> 시험</span>
@@ -1075,17 +1094,19 @@ function renderScheduleItem(item, studentNames) {
     : '';
   const period = CLASS_PERIODS[item.period] || { label: item.period, time: item.time || '' };
   const safeCourseName = item.course.replace(/'/g, "\\'");
+  const hasRoster  = STUDENTS.length > 0;   // 원우 명단 미정 학기(2학기)에는 인원/팝업 미표시
+  const totalTxt   = hasRoster ? ` · 전체 ${allStudents.length}명` : '';
   return `<div class="schedule-item ${item.type}">
     <div class="schedule-item-time">
       <span class="period-label">${period.label}</span>
       <span class="time-range">${item.time || period.time || ''}</span>
     </div>
     <div class="schedule-item-content" style="position:relative;">
-      <div class="course-name-label si-clickable" onclick="toggleCourseStudentPopup(event, '${safeCourseName}')">
-        ${item.course} <i class="fas fa-users tt-students-icon"></i>
-      </div>
+      ${hasRoster
+        ? `<div class="course-name-label si-clickable" onclick="toggleCourseStudentPopup(event, '${safeCourseName}')">${item.course} <i class="fas fa-users tt-students-icon"></i></div>`
+        : `<div class="course-name-label">${item.course}</div>`}
       <div class="professor-label"><i class="fas fa-user-tie"></i> ${course.professor} 교수</div>
-      <div class="session-label">${item.sessionNo}/${item.type === 'qna' ? 3 : course.total}회차 · 전체 ${allStudents.length}명</div>
+      <div class="session-label">${item.sessionNo}/${item.type === 'qna' ? 3 : course.total}회차${totalTxt}</div>
       ${studentTags}
     </div>
     ${getTypeBadge(item.type)}
@@ -1326,9 +1347,11 @@ function renderTimetableItem(item) {
         <div class="course-name-label exam-label">
           <i class="fas fa-file-alt"></i> ${item.course} ${groupBadge}
         </div>
-        <div class="professor-label" style="color:#c0392b;opacity:0.8">
+        ${(course.professor && course.professor !== '-')
+          ? `<div class="professor-label" style="color:#c0392b;opacity:0.8">
           <i class="fas fa-user-tie"></i> ${course.professor} 교수 &nbsp;·&nbsp; ${item.date <= '2026-04-18' ? '중간고사' : '기말고사'}
-        </div>
+        </div>`
+          : ''}
       </div>
       <span class="type-badge exam"><i class="fas fa-file-alt"></i> 시험</span>
     </div>`;
@@ -1338,6 +1361,8 @@ function renderTimetableItem(item) {
   const allStudents = STUDENTS.filter(s => s.courses.includes(item.course));
   const period     = CLASS_PERIODS[item.period] || { label: item.period, time: item.time || '' };
   const safeCourseName = item.course.replace(/'/g, "\\'");
+  const hasRoster  = STUDENTS.length > 0;   // 원우 명단 미정 학기(2학기)에는 인원/팝업 미표시
+  const totalTxt   = hasRoster ? ` · 전체 ${allStudents.length}명` : '';
 
   return `<div class="schedule-item ${item.type}">
     <div class="schedule-item-time">
@@ -1345,11 +1370,11 @@ function renderTimetableItem(item) {
       <span class="time-range">${item.time || period.time || ''}</span>
     </div>
     <div class="schedule-item-content" style="position:relative;">
-      <div class="course-name-label si-clickable" onclick="toggleCourseStudentPopup(event, '${safeCourseName}')">
-        ${item.course} <i class="fas fa-users tt-students-icon"></i>
-      </div>
+      ${hasRoster
+        ? `<div class="course-name-label si-clickable" onclick="toggleCourseStudentPopup(event, '${safeCourseName}')">${item.course} <i class="fas fa-users tt-students-icon"></i></div>`
+        : `<div class="course-name-label">${item.course}</div>`}
       <div class="professor-label"><i class="fas fa-user-tie"></i> ${course.professor} 교수</div>
-      <div class="session-label">${item.sessionNo}/${item.type === 'qna' ? 3 : course.total}회차 · 전체 ${allStudents.length}명</div>
+      <div class="session-label">${item.sessionNo}/${item.type === 'qna' ? 3 : course.total}회차${totalTxt}</div>
     </div>
     ${getTypeBadge(item.type)}
   </div>`;
@@ -1617,7 +1642,9 @@ function renderCourseGrid() {
       <div class="cc-name">${courseName}</div>
       <div class="cc-prof"><i class="fas fa-user-tie"></i> ${course.professor} 교수</div>
       <div class="cc-stats">
-        <span class="cc-stat"><i class="fas fa-users"></i> ${students.length}명</span>
+        ${STUDENTS.length > 0
+          ? `<span class="cc-stat"><i class="fas fa-users"></i> ${students.length}명</span>`
+          : `<span class="cc-stat"><i class="fas fa-calendar-check"></i> ${schedules.filter(s => !s.isExam).length}회</span>`}
       </div>
     </div>`;
   }).join('');
@@ -1650,22 +1677,25 @@ window.showCourseDetail = function(courseName) {
     </div>`;
   }).join('');
 
-  content.innerHTML = `
-    <div style="margin-bottom:16px;padding:14px;background:#f5f8ff;border-radius:10px;">
-      <strong>담당교수:</strong> ${course.professor} 교수 &nbsp;|&nbsp;
-      <strong>총 강의:</strong> ${schedules.length}회 &nbsp;|&nbsp;
-      <strong>수강인원:</strong> ${students.length}명
-    </div>
-    <div class="cd-grid">
-      <div>
-        <div class="cd-section-title"><i class="fas fa-users"></i> 수강 원우 (${students.length}명)</div>
-        <div class="cd-student-list">${studentHtml || '<span style="color:#8a9ab0">등록된 원우 없음</span>'}</div>
-      </div>
+  const hasRoster = STUDENTS.length > 0;   // 원우 명단 미정 학기(2학기)에는 원우 파트 숨김
+  const scheduleSection = `
       <div>
         <div class="cd-section-title"><i class="fas fa-calendar-check"></i> 수업 일정 (${schedules.length}회)</div>
         <div class="cd-schedule-list">${scheduleHtml || '<span style="color:#8a9ab0">일정 없음</span>'}</div>
-      </div>
+      </div>`;
+  content.innerHTML = `
+    <div style="margin-bottom:16px;padding:14px;background:#f5f8ff;border-radius:10px;">
+      <strong>담당교수:</strong> ${course.professor} 교수 &nbsp;|&nbsp;
+      <strong>총 강의:</strong> ${schedules.length}회${hasRoster ? ` &nbsp;|&nbsp; <strong>수강인원:</strong> ${students.length}명` : ''}
     </div>
+    ${hasRoster
+      ? `<div class="cd-grid">
+      <div>
+        <div class="cd-section-title"><i class="fas fa-users"></i> 수강 원우 (${students.length}명)</div>
+        <div class="cd-student-list">${studentHtml || '<span style="color:#8a9ab0">등록된 원우 없음</span>'}</div>
+      </div>${scheduleSection}
+    </div>`
+      : scheduleSection}
   `;
 
   detail.style.display = 'block';
