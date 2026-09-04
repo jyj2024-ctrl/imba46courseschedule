@@ -842,12 +842,14 @@ const FALL_SCHEDULE = [
   { date: "2026-09-12", period: "4교시", course: "유통관리론", sessionNo: 1, type: "offline" },
   { date: "2026-09-12", period: "4교시", course: "금융시장과금융기관의변화", sessionNo: 1, type: "offline" },
   { date: "2026-09-12", period: "4교시", course: "회계와기업경영", sessionNo: 1, type: "offline" },
+  { date: "2026-09-12", period: "4교시", course: "조직설계론", sessionNo: 1, type: "offline" }, // 2차 업데이트(26.8.26): 9/19 1교시 → 9/12 4교시로 일정 변경
+  // ===== 2026-09-13 (일) — 창업실무론 추석연휴 보강 =====
+  { date: "2026-09-13", period: "보강", time: "20:00~21:50", course: "창업실무론", sessionNo: 4, type: "offline", note: "추석연휴 보강" }, // 4차 업데이트(26.9.03): 9/26 0교시 → 9/13(일) 20:00~21:50로 일정 변경
   // ===== 2026-09-19 =====
   { date: "2026-09-19", period: "0교시", course: "창업실무론", sessionNo: 3, type: "offline" },
   { date: "2026-09-19", period: "1교시", course: "회계와비즈니스모델의이해", sessionNo: 1, type: "offline" },
   { date: "2026-09-19", period: "1교시", course: "유통관리론", sessionNo: 2, type: "offline" },
   { date: "2026-09-19", period: "1교시", course: "회계와기업경영", sessionNo: 2, type: "offline" },
-  { date: "2026-09-19", period: "1교시", course: "조직설계론", sessionNo: 1, type: "offline" },
   { date: "2026-09-19", period: "2교시", course: "재무제표분석론", sessionNo: 2, type: "offline" },
   { date: "2026-09-19", period: "2교시", course: "글로벌금융시장", sessionNo: 3, type: "offline" },
   { date: "2026-09-19", period: "2교시", course: "빅데이터분석론", sessionNo: 2, type: "offline" },
@@ -860,10 +862,6 @@ const FALL_SCHEDULE = [
   { date: "2026-09-19", period: "4교시", course: "핀테크와행동재무", sessionNo: 3, type: "offline" },
   { date: "2026-09-19", period: "4교시", course: "글로벌ESG론", sessionNo: 3, type: "offline" },
   { date: "2026-09-19", period: "4교시", course: "마케팅믹스론", sessionNo: 2, type: "offline" },
-  // ===== 2026-09-26 =====
-  { date: "2026-09-26", period: "0교시", course: "창업실무론", sessionNo: 4, type: "offline" },
-  // ===== 2026-10-03 =====
-  { date: "2026-10-03", period: "0교시", course: "창업실무론", sessionNo: 5, type: "offline" },
   // ===== 2026-10-10 =====
   { date: "2026-10-10", period: "0교시", course: "창업실무론", sessionNo: 6, type: "offline" },
   // ===== 2026-10-17 =====
@@ -878,12 +876,14 @@ const FALL_SCHEDULE = [
   { date: "2026-10-17", period: "3교시", course: "AI와경영정보", sessionNo: 3, type: "offline" },
   { date: "2026-10-17", period: "3교시", course: "소비자행동론", sessionNo: 2, type: "offline" },
   { date: "2026-10-17", period: "3교시", course: "증권투자의이해", sessionNo: 1, type: "offline" },
+  { date: "2026-10-17", period: "3교시", course: "마케팅관리론(2분반)", sessionNo: 3, type: "offline" }, // 3차 업데이트(26.9.03): 11/7 1교시 → 10/17 3교시로 일정 변경
   { date: "2026-10-17", period: "4교시", course: "글로벌비즈니스협상론", sessionNo: 3, type: "offline" },
-  { date: "2026-10-17", period: "4교시", course: "소비자경험관리", sessionNo: 3, type: "offline" },
   { date: "2026-10-17", period: "4교시", course: "조직행동론", sessionNo: 2, type: "offline" },
   { date: "2026-10-17", period: "4교시", course: "기업재무전략론", sessionNo: 3, type: "offline" },
   // ===== 2026-10-24 =====
   { date: "2026-10-24", period: "전교시", course: "중간고사", type: "offline", isExam: true, time: "" },
+  // ===== 2026-10-25 (일) — 창업실무론 개천절 보강 =====
+  { date: "2026-10-25", period: "보강", time: "20:00~21:50", course: "창업실무론", sessionNo: 5, type: "offline", note: "개천절 보강" }, // 4차 업데이트(26.9.03): 10/3 0교시 → 10/25(일) 20:00~21:50로 일정 변경
   // ===== 2026-10-31 =====
   { date: "2026-10-31", period: "0교시", course: "창업실무론", sessionNo: 8, type: "offline" },
   { date: "2026-10-31", period: "1교시", course: "최신정보시스템사례와전략", sessionNo: 3, type: "offline" },
@@ -906,12 +906,12 @@ const FALL_SCHEDULE = [
   // ===== 2026-11-07 =====
   { date: "2026-11-07", period: "0교시", course: "창업실무론", sessionNo: 9, type: "offline" },
   { date: "2026-11-07", period: "1교시", course: "AI와경영정보", sessionNo: 4, type: "offline" },
-  { date: "2026-11-07", period: "1교시", course: "마케팅관리론(2분반)", sessionNo: 3, type: "offline" },
   { date: "2026-11-07", period: "1교시", course: "소비자행동론", sessionNo: 3, type: "offline" },
   { date: "2026-11-07", period: "1교시", course: "국제경영론", sessionNo: 4, type: "offline" },
   { date: "2026-11-07", period: "1교시", course: "회계와경영의사결정", sessionNo: 2, type: "offline" },
   { date: "2026-11-07", period: "1교시", course: "증권투자의이해", sessionNo: 3, type: "offline" },
   { date: "2026-11-07", period: "2교시", course: "최신정보시스템사례와전략", sessionNo: 4, type: "offline" },
+  { date: "2026-11-07", period: "2교시", course: "소비자경험관리", sessionNo: 3, type: "offline" }, // 1차 업데이트(26.8.25): 10/17 4교시 → 11/7 2교시로 일정 변경
   { date: "2026-11-07", period: "3교시", course: "회계와비즈니스모델의이해", sessionNo: 2, type: "offline" },
   { date: "2026-11-07", period: "3교시", course: "유통관리론", sessionNo: 5, type: "offline" },
   { date: "2026-11-07", period: "3교시", course: "금융시장과금융기관의변화", sessionNo: 2, type: "offline" },
@@ -987,10 +987,10 @@ const FALL_QNA = [
   { date: "2026-09-09", period: "저녁", course: "빅데이터분석론", sessionNo: 1, type: "qna", time: "19:00~20:00" },
   { date: "2026-09-09", period: "저녁", course: "기업재무전략론", sessionNo: 1, type: "qna", time: "21:00~22:00" },
   { date: "2026-09-10", period: "저녁", course: "일과조직의관리와혁신", sessionNo: 1, type: "qna", time: "19:00~20:00" },
+  { date: "2026-09-10", period: "저녁", course: "조직설계론", sessionNo: 1, type: "qna", time: "21:00~22:00" }, // 2차 업데이트(26.8.26): 9/15 20:00~21:00 → 9/10 21:00~22:00로 일정 변경
   { date: "2026-09-11", period: "저녁", course: "유통관리론", sessionNo: 1, type: "qna", time: "19:00~20:00" },
   { date: "2026-09-14", period: "저녁", course: "회계와비즈니스모델의이해", sessionNo: 2, type: "qna", time: "19:00~20:00" },
   { date: "2026-09-15", period: "저녁", course: "AI와경영정보", sessionNo: 1, type: "qna", time: "19:00~20:00" },
-  { date: "2026-09-15", period: "저녁", course: "조직설계론", sessionNo: 1, type: "qna", time: "20:00~21:00" },
   { date: "2026-09-16", period: "저녁", course: "증권투자의이해", sessionNo: 2, type: "qna", time: "20:00~21:00" },
   { date: "2026-09-17", period: "저녁", course: "국제경영론", sessionNo: 1, type: "qna", time: "19:00~20:00" },
   { date: "2026-09-21", period: "저녁", course: "회계와기업경영", sessionNo: 1, type: "qna", time: "21:00~22:00" },
