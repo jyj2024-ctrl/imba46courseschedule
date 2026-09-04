@@ -7,6 +7,8 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
   signOut,
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/11.8.1/firebase-auth.js";
@@ -76,10 +78,20 @@ async function saveGroupsToFirestore(groups) {
 }
 
 // ── 구글 로그인 / 로그아웃 ───────────────────────────────────
+
+// 모바일 여부 체크
+function isMobile() {
+  return /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+}
+
 async function signInWithGoogle() {
   const provider = new GoogleAuthProvider();
   try {
-    await signInWithPopup(auth, provider);
+    if (isMobile()) {
+      await signInWithRedirect(auth, provider);   // 모바일: 리디렉션 방식
+    } else {
+      await signInWithPopup(auth, provider);      // PC: 기존 팝업 방식
+    }
   } catch (e) {
     if (e.code !== 'auth/popup-closed-by-user') {
       console.error("[Firebase] 로그인 실패:", e);
@@ -87,6 +99,11 @@ async function signInWithGoogle() {
     }
   }
 }
+
+// 페이지 로드 시 리디렉션 결과 처리 (반드시 추가해야 함!)
+getRedirectResult(auth).catch((e) => {
+  console.error("[Firebase] 리디렉션 로그인 처리 실패:", e);
+});
 
 async function signOutUser() {
   try {
