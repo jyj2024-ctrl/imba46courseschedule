@@ -673,7 +673,7 @@ const SUMMER_STUDENTS = [
 ];
 
 // ============================================================
-// 2026년 2학기 (별도 학기) — 원우 수강 명단은 추후 등록 (현재 비어 있음)
+// 2026년 2학기 (별도 학기)
 // ============================================================
 const FALL_COURSES = {
   "창업실무론": { name: "창업실무론", professor: "김우진", total: 13, color: "#e74c3c" },
@@ -708,7 +708,102 @@ const FALL_COURSES = {
   "증권투자의이해": { name: "증권투자의이해", professor: "안희준", total: 5, color: "#4e342e" },
 };
 
-const FALL_STUDENTS = [];
+// 2026-2학기 원우 수강 명단 (2026-02 수강신청내역 반영)
+// location/company 는 46기 1학기 명단과 동일 인물 기준
+const FALL_STUDENTS = [
+  { name: "강병희", location: "국내", company: "GS리테일", courses: ["창업실무론", "소비자경험관리", "일과조직의관리와혁신"] },
+  { name: "고세진", location: "베트남", company: "서흥베트남", courses: ["마케팅믹스론", "조직설계론", "인적자원전략론"] },
+  { name: "공부석", location: "국내", company: "현대모비스", courses: ["빅데이터분석론", "창업실무론", "핀테크와행동재무"] },
+  { name: "김광식", location: "베트남", company: "EDK VINA CO., LTD.", courses: ["조직설계론", "재무제표분석론", "핀테크와행동재무"] },
+  { name: "김나영", location: "국내", company: "주식회사 당근마켓", courses: ["조직설계론", "국제경영론", "글로벌비즈니스협상론"] },
+  { name: "김대억", location: "국내", company: "국민은행", courses: ["마케팅믹스론", "소비자경험관리", "회계와비즈니스모델의이해"] },
+  { name: "김대열", location: "국내", company: "포스코인터내셔널", courses: ["기업재무전략론", "AI와경영정보", "핀테크와행동재무"] },
+  { name: "김덕현", location: "국내", company: "㈜스페이스애드", courses: ["재무제표분석론", "핀테크와행동재무", "증권투자의이해"] },
+  { name: "김동훈", location: "국내", company: "일진글로벌홀딩스", courses: ["조직설계론", "소비자경험관리", "AI와경영정보"] },
+  { name: "김민석", location: "국내", company: "㈜그라비티", courses: ["마케팅믹스론", "소비자경험관리", "회계와비즈니스모델의이해"] },
+  { name: "김성원", location: "국내", company: "㈜올라운드컴퍼니즈", courses: ["글로벌비즈니스협상론", "글로벌ESG론", "증권투자의이해"] },
+  { name: "김수현", location: "국내", company: "중앙신협", courses: ["글로벌비즈니스협상론", "빅데이터분석론", "글로벌ESG론"] },
+  { name: "김승인", location: "국내", company: "레고랜드코리아", courses: ["조직설계론", "글로벌비즈니스협상론", "AI와경영정보", "글로벌ESG론"] },
+  { name: "김은정", location: "홍콩", company: "A-One Toys Limited", courses: ["경영전략론", "핀테크와행동재무", "인적자원전략론"] },
+  { name: "김준석", location: "국내", company: "CoupangFS", courses: ["소비자행동론", "유통관리론", "일과조직의관리와혁신"] },
+  { name: "김준표", location: "국내", company: "포스코인터내셔널", courses: ["조직설계론", "글로벌비즈니스협상론", "핀테크와행동재무"] },
+  { name: "김지홍", location: "국내", company: "현대위아", courses: ["조직설계론", "국제경영론", "핀테크와행동재무"] },
+  { name: "김진수", location: "국내", company: "시흥도시공사", courses: ["마케팅믹스론", "조직설계론", "AI와경영정보"] },
+  { name: "김초원", location: "국내", company: "한화솔루션 주식회사", courses: ["경영전략론", "핀테크와행동재무", "회계와비즈니스모델의이해"] },
+  { name: "김현석", location: "국내", company: "포스코인터내셔널", courses: ["조직설계론", "재무제표분석론", "글로벌비즈니스협상론"] },
+  { name: "김호중", location: "미국", company: "주식회사 진이어스", courses: ["마케팅믹스론", "조직행동론", "경영자를위한데이터분석및통계적사고", "AI와경영정보"] },
+  { name: "노새암", location: "국내", company: "주식회사 로웨인", courses: ["마케팅믹스론", "국제경영론", "창업실무론", "회계와비즈니스모델의이해"] },
+  { name: "문재웅", location: "국내", company: "에드워드코리아(Atlas Copco)", courses: ["국제경영론", "소비자경험관리", "금융시장과금융기관의변화"] },
+  { name: "박병규", location: "국내", company: "우리투자증권", courses: ["마케팅믹스론", "창업실무론", "회계와비즈니스모델의이해"] },
+  { name: "박상현", location: "국내", company: "풍림무약㈜", courses: ["조직설계론", "빅데이터분석론", "글로벌ESG론"] },
+  { name: "박선용", location: "국내", company: "㈜에스씨케이컴퍼니", courses: ["창업실무론", "증권투자의이해", "회계와비즈니스모델의이해"] },
+  { name: "박재완", location: "국내", company: "두산건설(주)", courses: ["글로벌비즈니스협상론", "빅데이터분석론", "핀테크와행동재무"] },
+  { name: "박정호", location: "태국", company: "엘브이엠씨홀딩스", courses: ["국제경영론", "재무제표분석론", "유통관리론", "창업실무론"] },
+  { name: "박준녕", location: "국내", company: "GS리테일", courses: ["마케팅믹스론", "소비자경험관리", "회계와경영의사결정"] },
+  { name: "박충혁", location: "국내", company: "DB증권", courses: ["소비자경험관리", "글로벌ESG론", "회계와비즈니스모델의이해"] },
+  { name: "박태현", location: "국내", company: "한국어촌어항공단", courses: ["재무제표분석론", "글로벌ESG론", "회계와경영의사결정"] },
+  { name: "박현진", location: "국내", company: "웅진씽크빅", courses: ["경영전략론", "창업실무론", "일과조직의관리와혁신"] },
+  { name: "배선유", location: "국내", company: "이알플러스", courses: ["마케팅믹스론", "조직행동론", "창업실무론"] },
+  { name: "설윤호", location: "국내", company: "㈜쿠팡", courses: ["마케팅믹스론", "소비자경험관리", "AI와경영정보"] },
+  { name: "성원", location: "국내", company: "스타빌루스", courses: ["경영전략론", "증권투자의이해", "일과조직의관리와혁신"] },
+  { name: "손여울", location: "베트남", company: "KOTITI시험연구원 베트남 법인", courses: ["경영전략론", "핀테크와행동재무", "인적자원전략론"] },
+  { name: "손일권", location: "국내", company: "포스코인터내셔널", courses: ["마케팅믹스론", "국제경영론", "금융시장과금융기관의변화"] },
+  { name: "신윤경", location: "국내", company: "동아약국", courses: ["국제경영론", "글로벌ESG론", "회계와비즈니스모델의이해"] },
+  { name: "신은옥", location: "국내", company: "젠엑시스㈜", courses: ["창업실무론", "회계와경영의사결정", "회계와비즈니스모델의이해"] },
+  { name: "신지윤", location: "국내", company: "대상주식회사", courses: ["소비자행동론", "기업재무전략론", "일과조직의관리와혁신"] },
+  { name: "안준영", location: "국내", company: "24 리본동물의료센터", courses: ["국제경영론", "소비자경험관리", "금융시장과금융기관의변화", "일과조직의관리와혁신"] },
+  { name: "안준형", location: "국내", company: "㈜디윅스", courses: ["경영전략론", "핀테크와행동재무", "인적자원전략론"] },
+  { name: "오경수", location: "국내", company: "㈜이마트", courses: ["금융시장과금융기관의변화", "인적자원전략론", "일과조직의관리와혁신"] },
+  { name: "우인식", location: "국내", company: "KGC한국인삼공사", courses: ["글로벌비즈니스협상론", "글로벌ESG론", "증권투자의이해"] },
+  { name: "우정환", location: "국내", company: "하이트진로㈜", courses: ["빅데이터분석론", "핀테크와행동재무", "회계와비즈니스모델의이해"] },
+  { name: "유봉호", location: "국내", company: "다이아몬드컨트리클럽", courses: ["조직설계론", "빅데이터분석론", "소비자경험관리", "글로벌ESG론"] },
+  { name: "유지호", location: "국내", company: "㈜포스코인터내셔널", courses: ["마케팅믹스론", "국제경영론", "금융시장과금융기관의변화"] },
+  { name: "윤미래", location: "국내", company: "맥케인", courses: ["경영전략론", "핀테크와행동재무", "인적자원전략론"] },
+  { name: "윤옥", location: "국내", company: "허드슨첨단소재 주식회사", courses: ["글로벌금융시장", "글로벌ESG론", "증권투자의이해"] },
+  { name: "윤용상", location: "국내", company: "㈜에스비티엘첨단소재", courses: ["경영전략론", "유통관리론", "핀테크와행동재무"] },
+  { name: "윤정호", location: "중국", company: "선옌디자인(북경선옌건설공정유한회사)", courses: ["경영전략론", "핀테크와행동재무", "인적자원전략론"] },
+  { name: "윤지목", location: "국내", company: "SK바이오팜", courses: ["기업재무전략론", "회계와경영의사결정", "일과조직의관리와혁신"] },
+  { name: "이규영", location: "국내", company: "GE HealthCare / APAC", courses: ["국제경영론", "최신정보시스템사례와전략", "회계와비즈니스모델의이해"] },
+  { name: "이민재", location: "국내", company: "가톨릭출판사", courses: ["국제경영론", "글로벌비즈니스협상론", "글로벌ESG론"] },
+  { name: "이상용", location: "국내", company: "메리츠증권", courses: ["기업재무전략론", "경영자를위한데이터분석및통계적사고", "증권투자의이해"] },
+  { name: "이성우", location: "국내", company: "삼성전자", courses: ["경영전략론", "핀테크와행동재무", "인적자원전략론"] },
+  { name: "이승규", location: "국내", company: "삼성전자주식회사", courses: ["창업실무론", "금융시장과금융기관의변화", "글로벌ESG론"] },
+  { name: "이웅호", location: "국내", company: "HLB생명과학", courses: ["경영전략론", "핀테크와행동재무", "인적자원전략론"] },
+  { name: "이장우", location: "국내", company: "포스코인터내셔널", courses: ["국제경영론", "핀테크와행동재무", "회계와비즈니스모델의이해"] },
+  { name: "이재웅", location: "국내", company: "신한은행", courses: ["마케팅믹스론", "조직설계론", "경영전략론"] },
+  { name: "이준선", location: "국내", company: "(사)대한전기협회", courses: ["국제경영론", "소비자경험관리", "글로벌ESG론"] },
+  { name: "이지훈", location: "국내", company: "LX판토스", courses: ["조직설계론", "소비자경험관리", "AI와경영정보"] },
+  { name: "이진훈", location: "국내", company: "㈜신세계 I&C", courses: ["글로벌비즈니스협상론", "AI와경영정보", "핀테크와행동재무"] },
+  { name: "이태윤", location: "국내", company: "㈜포스코인터내셔널", courses: ["글로벌금융시장", "핀테크와행동재무", "금융시장과금융기관의변화"] },
+  { name: "이현영", location: "국내", company: "(사)한국ESG경영개발원", courses: ["마케팅믹스론", "유통관리론", "인적자원전략론"] },
+  { name: "이화수", location: "국내", company: "삼성전자", courses: ["마케팅믹스론", "AI와경영정보", "인적자원전략론"] },
+  { name: "임도헌", location: "국내", company: "채널A", courses: ["국제경영론", "유통관리론", "일과조직의관리와혁신"] },
+  { name: "장연주", location: "국내", company: "㈜풀무원", courses: ["회계와경영의사결정", "회계와비즈니스모델의이해", "일과조직의관리와혁신"] },
+  { name: "정동원", location: "국내", company: "홈앤쇼핑", courses: ["유통관리론", "글로벌금융시장", "글로벌ESG론"] },
+  { name: "정명환", location: "국내", company: "㈜바이오노트", courses: ["조직설계론", "빅데이터분석론", "최신정보시스템사례와전략", "일과조직의관리와혁신"] },
+  { name: "정수정", location: "국내", company: "신원", courses: ["유통관리론", "최신정보시스템사례와전략", "증권투자의이해"] },
+  { name: "정윤철", location: "국내", company: "㈜신세계 I&C", courses: ["국제경영론", "글로벌비즈니스협상론", "글로벌ESG론"] },
+  { name: "조근행", location: "국내", company: "COUPANG", courses: ["유통관리론", "글로벌비즈니스협상론", "일과조직의관리와혁신"] },
+  { name: "조승희", location: "국내", company: "삼성바이오로직스", courses: ["국제경영론", "금융시장과금융기관의변화", "글로벌ESG론"] },
+  { name: "조웅기", location: "국내", company: "유니버설 뮤직 코리아", courses: ["유통관리론", "소비자경험관리", "글로벌ESG론"] },
+  { name: "주성배", location: "국내", company: "삼성전자", courses: ["기업재무전략론", "경영자를위한데이터분석및통계적사고", "핀테크와행동재무"] },
+  { name: "주현정", location: "국내", company: "㈜위대한상상", courses: ["경영전략론", "창업실무론", "글로벌ESG론"] },
+  { name: "지승열", location: "국내", company: "차봇모빌리티㈜", courses: ["글로벌금융시장", "AI와경영정보", "글로벌ESG론"] },
+  { name: "천우성", location: "국내", company: "삼성전자 MX 사업부", courses: ["빅데이터분석론", "인적자원전략론", "일과조직의관리와혁신"] },
+  { name: "최승규", location: "국내", company: "HS효성인포메이션시스템", courses: ["창업실무론", "소비자경험관리", "핀테크와행동재무"] },
+  { name: "최승수", location: "국내", company: "삼성물산 상사부문", courses: ["소비자행동론", "창업실무론", "일과조직의관리와혁신"] },
+  { name: "최영렬", location: "국내", company: "엘앤에프", courses: ["국제경영론", "글로벌금융시장", "글로벌비즈니스협상론", "금융시장과금융기관의변화"] },
+  { name: "최정욱", location: "국내", company: "iM뱅크", courses: ["글로벌금융시장", "글로벌비즈니스협상론", "핀테크와행동재무"] },
+  { name: "최홍석", location: "국내", company: "㈜에스투더블유", courses: ["유통관리론", "글로벌금융시장", "회계와경영의사결정"] },
+  { name: "한보미", location: "국내", company: "9988병원", courses: ["유통관리론", "소비자경험관리", "글로벌ESG론"] },
+  { name: "한창훈", location: "국내", company: "㈜포스코인터내셔널", courses: ["글로벌비즈니스협상론", "핀테크와행동재무", "금융시장과금융기관의변화"] },
+  { name: "허문수", location: "중국", company: "SK hynix 반도체", courses: ["AI와경영정보", "핀테크와행동재무", "회계와비즈니스모델의이해"] },
+  { name: "허석", location: "이탈리아 / 밀라노", company: "㈜바람인터내셔날", courses: ["AI와경영정보", "인적자원전략론", "회계와비즈니스모델의이해"] },
+  { name: "허영준", location: "국내", company: "㈜실리콘마이터스", courses: ["국제경영론", "글로벌비즈니스협상론", "글로벌ESG론"] },
+  { name: "현용범", location: "국내", company: "풍림무약주식회사", courses: ["조직설계론", "글로벌비즈니스협상론", "글로벌ESG론"] },
+  { name: "홍성민", location: "국내", company: "㈜이녹스첨단소재", courses: ["국제경영론", "금융시장과금융기관의변화", "글로벌ESG론"] },
+  { name: "황진엽", location: "국내", company: "라메르유한회사", courses: ["인적자원전략론", "회계와경영의사결정", "일과조직의관리와혁신"] },
+];
 
 const FALL_SCHEDULE = [
   // ===== 2026-09-05 =====
@@ -991,7 +1086,7 @@ function applySemester(sem) {
     COURSES       = FALL_COURSES;
     SCHEDULE_DATA = FALL_SCHEDULE;    // 토요일 오프라인 + 중간/기말고사
     QNA_SCHEDULE  = FALL_QNA;
-    STUDENTS      = FALL_STUDENTS;    // 원우 수강 명단 미정 (빈 배열)
+    STUDENTS      = FALL_STUDENTS;
   } else {
     COURSES       = SPRING_COURSES;
     SCHEDULE_DATA = SPRING_SCHEDULE;
