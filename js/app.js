@@ -196,6 +196,10 @@ function isToday(dateStr) {
   const d = new Date(dateStr + 'T00:00:00');
   return today.toDateString() === d.toDateString();
 }
+function getCurrentYm() {
+  const today = new Date();
+  return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}`;
+}
 function getWeekNumber(dateStr) {
   const d = new Date(dateStr + 'T00:00:00');
   const WEEK = 7 * 24 * 60 * 60 * 1000;
@@ -1284,10 +1288,17 @@ function initTimetableTab() {
 function renderMonthTabs() {
   const container = document.getElementById('monthTabs');
   const months = [...new Set(getAllScheduleDates().map(d => d.substring(0,7)))].sort();
-  container.innerHTML = months.map((ym, i) =>
-    `<button class="month-tab ${i===0?'active':''}" data-month="${ym}" onclick="switchMonth('${ym}')">${getMonthLabel(ym)}</button>`
+  const todayYm = getCurrentYm();
+  let defaultMonth = months[0];
+  if (months.includes(todayYm)) {
+    defaultMonth = todayYm;
+  } else if (todayYm > months[months.length - 1]) {
+    defaultMonth = months[months.length - 1];
+  }
+  container.innerHTML = months.map(ym =>
+    `<button class="month-tab ${ym===defaultMonth?'active':''}" data-month="${ym}" onclick="switchMonth('${ym}')">${getMonthLabel(ym)}</button>`
   ).join('');
-  state.currentMonth = months[0];
+  state.currentMonth = defaultMonth;
 }
 
 window.switchMonth = function(ym) {
