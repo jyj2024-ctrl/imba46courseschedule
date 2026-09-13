@@ -233,6 +233,12 @@ function getTypeBadge(type) {
   if (type === 'qna')     return '<span class="type-badge qna"><i class="fas fa-video"></i> 화상Q&A</span>';
   return '';
 }
+// 시험 항목의 중간고사/기말고사 여부 판별 (examType 우선, 없으면 학기 내 최초 시험일 기준 폴백)
+function getExamLabel(item) {
+  if (item.examType === 'midterm') return '중간고사';
+  if (item.examType === 'final')   return '기말고사';
+  return item.date <= '2026-04-18' ? '중간고사' : '기말고사';
+}
 
 // 날짜 목록 (중복 제거 정렬) — 현재 활성 학기 기준
 function getAllScheduleDates() {
@@ -1080,7 +1086,7 @@ function renderScheduleItem(item, studentNames) {
         </div>
         ${(course.professor && course.professor !== '-')
           ? `<div class="professor-label" style="color:#c0392b;opacity:0.8">
-          <i class="fas fa-user-tie"></i> ${course.professor} 교수 &nbsp;·&nbsp; ${item.date <= '2026-04-18' ? '중간고사' : '기말고사'}
+          <i class="fas fa-user-tie"></i> ${course.professor} 교수 &nbsp;·&nbsp; ${getExamLabel(item)}
         </div>`
           : ''}
         ${studentTags}
@@ -1360,7 +1366,7 @@ function renderTimetableItem(item) {
         </div>
         ${(course.professor && course.professor !== '-')
           ? `<div class="professor-label" style="color:#c0392b;opacity:0.8">
-          <i class="fas fa-user-tie"></i> ${course.professor} 교수 &nbsp;·&nbsp; ${item.date <= '2026-04-18' ? '중간고사' : '기말고사'}
+          <i class="fas fa-user-tie"></i> ${course.professor} 교수 &nbsp;·&nbsp; ${getExamLabel(item)}
         </div>`
           : ''}
       </div>
@@ -2303,7 +2309,7 @@ function renderDqResult(dateStr, selectedSlots) {
   // 제목: 날짜 행 + 교시 칩 행 분리
   const slotChips = selectedSlots.map(slot => {
     if (slot.isExam) {
-      const examName = dateStr === '2026-04-18' ? '중간고사' : '기말고사';
+      const examName = getExamLabel(allItems.find(i => i.isExam) || { date: dateStr });
       return `<span class="dq-slot-chip dq-slot-chip-exam">${examName}${slot.time ? '<span class="dq-chip-time">' + slot.time + '</span>' : ''}</span>`;
     }
     const pi = CLASS_PERIODS[slot.period] || { label: slot.period };
@@ -2316,7 +2322,7 @@ function renderDqResult(dateStr, selectedSlots) {
 
   // 과목별 카드
   const allEnrolledSet = new Map();
-  const examName = dateStr === '2026-04-18' ? '중간고사' : '기말고사';
+  const examName = getExamLabel(allItems.find(i => i.isExam) || { date: dateStr });
 
   courseEl.innerHTML = allItems.map(item => {
     const course    = COURSES[item.course] || { professor: '-', color: '#2563b0' };
@@ -2389,7 +2395,7 @@ window.exportDqToExcel = function() {
     const enrolled = STUDENTS.filter(s => s.courses.includes(item.course));
     const pi       = CLASS_PERIODS[item.period] || { label: item.period };
     const timeStr  = item.time || pi.time || '';
-    const typeStr  = item.isExam ? (d.dateStr === '2026-04-18' ? '중간고사' : '기말고사')
+    const typeStr  = item.isExam ? getExamLabel(item)
                    : (item.type === 'qna' ? '화상Q&A' : '오프라인');
     if (enrolled.length === 0) {
       sheet1Data.push([d.dateLabel, timeStr, item.course, course.professor, typeStr, '']);
@@ -2409,7 +2415,7 @@ window.exportDqToExcel = function() {
       if (!item) return;
       const pi      = CLASS_PERIODS[item.period] || { label: item.period };
       const timeStr = item.time || pi.time || '';
-      const typeStr = item.isExam ? (d.dateStr === '2026-04-18' ? '중간고사' : '기말고사')
+      const typeStr = item.isExam ? getExamLabel(item)
                     : (item.type === 'qna' ? '화상Q&A' : '오프라인');
       sheet2Data.push([name, cName, timeStr, typeStr]);
     });
