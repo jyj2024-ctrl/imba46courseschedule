@@ -896,7 +896,6 @@ const FALL_SCHEDULE = [
   { date: "2026-10-31", period: "2교시", course: "국제경영론", sessionNo: 3, type: "offline" },
   { date: "2026-10-31", period: "2교시", course: "증권투자의이해", sessionNo: 2, type: "offline" },
   { date: "2026-10-31", period: "3교시", course: "경영전략론", sessionNo: 2, type: "offline" },
-  { date: "2026-10-31", period: "3교시", course: "마케팅관리론(1분반)", sessionNo: 3, type: "offline" },
   { date: "2026-10-31", period: "3교시", course: "재무제표분석론", sessionNo: 3, type: "offline" },
   { date: "2026-10-31", period: "3교시", course: "글로벌금융시장", sessionNo: 4, type: "offline" },
   { date: "2026-10-31", period: "3교시", course: "빅데이터분석론", sessionNo: 3, type: "offline" },
@@ -922,6 +921,7 @@ const FALL_SCHEDULE = [
   { date: "2026-11-14", period: "1교시", course: "경영전략론", sessionNo: 3, type: "offline" },
   { date: "2026-11-14", period: "1교시", course: "재무제표분석론", sessionNo: 4, type: "offline" },
   { date: "2026-11-14", period: "1교시", course: "빅데이터분석론", sessionNo: 4, type: "offline" },
+  { date: "2026-11-14", period: "1교시", course: "마케팅관리론(1분반)", sessionNo: 3, type: "offline" }, // 5차 업데이트(26.9.09): 10/31 3교시 → 11/14 1교시로 일정 변경
   { date: "2026-11-14", period: "2교시", course: "경영자를위한데이터분석및통계적사고", sessionNo: 4, type: "offline" },
   { date: "2026-11-14", period: "2교시", course: "회계와비즈니스모델의이해", sessionNo: 3, type: "offline" },
   { date: "2026-11-14", period: "2교시", course: "금융시장과금융기관의변화", sessionNo: 3, type: "offline" },
